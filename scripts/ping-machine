@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+
+echo
+echo "The last ping from this machine was at:"
+su - postgres -c "psql \"lamassu\" -Atc \"select updated from machine_pings where device_id = '$1'\""
+echo
