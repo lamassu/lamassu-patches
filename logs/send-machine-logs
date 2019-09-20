@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+EMAIL_ADDRESS=$1
+if [ ! $# -eq 1 ]; then
+  echo "send-machine-logs <email_address>"
+  exit 1
+elif [[ ! $EMAIL_ADDRESS =~ .+@.+\..+ ]]; then
+  echo "Please enter a valid email address."
+  echo
+  echo "send-machine-logs <email_address>"
+  exit 1
+fi
+
+if [ $(dpkg-query -W -f='${Status}' mutt 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  echo "Mutt not installed. Installing..."
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes mutt >/dev/null;
+fi
+
+MACHINELOGS_FILE=/tmp/machine-logs-$HOSTNAME-$(date -u "+%Y-%m-%d_%H-%M-%S").csv
+su - postgres -c "psql \"lamassu\" -Atc \"COPY logs to '$MACHINELOGS_FILE' WITH CSV HEADER\""
+export EMAIL="Machine Log <$EMAIL_ADDRESS>"
+echo "Attached are your machine logs." | mutt -s "Machine logs from $HOSTNAME" -a $MACHINELOGS_FILE -- $EMAIL_ADDRESS
+rm $MACHINELOGS_FILE
+echo "Machine logs sent to $EMAIL_ADDRESS. If it doesn't appear, check your spam folder."

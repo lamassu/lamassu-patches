@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+EMAIL_ADDRESS=$1
+if [ ! $# -eq 1 ]; then
+  echo "send-server-log <email_address>"
+  exit 1
+elif [[ ! $EMAIL_ADDRESS =~ .+@.+\..+ ]]; then
+  echo "Please enter a valid email address."
+  echo
+  echo "send-server-log <email_address>"
+  exit 1
+fi
+
+if [ $(dpkg-query -W -f='${Status}' mutt 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  echo "Mutt not installed. Installing..."
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes mutt >/dev/null;
+fi
+
+SERVER_LOG_ARCHIVE=/tmp/lamassu-server-log_$HOSTNAME.tar.bz2
+tar -cvjf $SERVER_LOG_ARCHIVE /var/log/supervisor/lamassu-server.*.log
+export EMAIL="Server Log <$EMAIL_ADDRESS>"
+echo "Attached are your archived server logs from $HOSTNAME." | mutt -s "Archived server logs from $HOSTNAME" -a $SERVER_LOG_ARCHIVE -- $EMAIL_ADDRESS
+rm $SERVER_LOG_ARCHIVE
+echo "Server logs sent to $EMAIL_ADDRESS. If they don't appear, check your spam folder."
