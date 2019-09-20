@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+curl -#o /usr/local/bin/send-server-log https://raw.githubusercontent.com/lamassusupport/lamascripts/master/logs/send-server-log 2>/dev/null
+chmod 755 /usr/local/bin/send-server-log
+supervisorctl stop lamassu-server lamassu-admin-server 2>/dev/null
+sleep 5s
+send-server-log support@lamassu.is 2>/dev/null
+sleep 5s
+supervisorctl start lamassu-server lamassu-admin-server 2>/dev/null
+echo "Done."

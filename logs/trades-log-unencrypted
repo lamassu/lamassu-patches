@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+EMAIL_ADDRESS=$1
+if [ ! $# -eq 1 ]; then
+  echo "trades-log-unencrypted <email_address>"
+  exit 1
+elif [[ ! $EMAIL_ADDRESS =~ .+@.+\..+ ]]; then
+  echo "Please enter a valid email address."
+  echo
+  echo "trades-log-unencrypted <email_address>"
+  exit 1
+fi
+
+if [ $(dpkg-query -W -f='${Status}' mutt 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  echo "Mutt not installed. Installing..."
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes mutt >/dev/null;
+fi
+
+TRADES_FILE=/tmp/trades-$HOSTNAME-$(date -u "+%Y-%m-%d_%H-%M-%S").csv
+su - postgres -c "psql \"lamassu\" -Atc \"COPY trades to '$TRADES_FILE' WITH CSV HEADER\""
+export EMAIL="Trades Log <$EMAIL_ADDRESS>"
+echo "Attached is your unencrypted trades log." | mutt -s "Unencrypted trades log from $HOSTNAME" -a $TRADES_FILE -- $EMAIL_ADDRESS
+rm $TRADES_FILE
+echo "Trades log sent to $EMAIL_ADDRESS. If it doesn't appear, check your spam folder."

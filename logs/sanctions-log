@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -e
+
+EMAIL_ADDRESS=$1
+if [ ! $# -eq 1 ]; then
+  echo "sanctions-log <email_address>"
+  exit 1
+elif [[ ! $EMAIL_ADDRESS =~ .+@.+\..+ ]]; then
+  echo "Please enter a valid email address."
+  echo
+  echo "sanctions-log <email_address>"
+  exit 1
+fi
+
+if [ $(dpkg-query -W -f='${Status}' mutt 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  echo "Mutt not installed. Installing..."
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes mutt >/dev/null;
+fi
+
+SANCTIONS_FILE=/tmp/sanctions-$HOSTNAME-$(date -u "+%Y-%m-%d_%H-%M-%S").csv
+su - postgres -c "psql \"lamassu\" -Atc \"COPY sanctions_logs to '$SANCTIONS_FILE' WITH CSV HEADER\""
+gpg --batch --trust-model always -e -r $EMAIL_ADDRESS $SANCTIONS_FILE
+rm $SANCTIONS_FILE
+export EMAIL="Sanctions Log <$EMAIL_ADDRESS>"
+echo "Attached is your encrypted sanctions log." | mutt -s "Encrypted sanctions log from $HOSTNAME" -a $SANCTIONS_FILE.gpg -- $EMAIL_ADDRESS
+rm $SANCTIONS_FILE.gpg
+echo "Sanctions log sent to $EMAIL_ADDRESS. If it doesn't appear, check your spam folder."

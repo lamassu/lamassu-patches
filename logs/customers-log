@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -e
+
+EMAIL_ADDRESS=$1
+if [ ! $# -eq 1 ]; then
+  echo "customers-log <email_address>"
+  exit 1
+elif [[ ! $EMAIL_ADDRESS =~ .+@.+\..+ ]]; then
+  echo "Please enter a valid email address."
+  echo
+  echo "customers-log <email_address>"
+  exit 1
+fi
+
+if [ $(dpkg-query -W -f='${Status}' mutt 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  echo "Mutt not installed. Installing..."
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes mutt >/dev/null;
+fi
+
+CUSTOMERS_FILE=/tmp/customers-$HOSTNAME-$(date -u "+%Y-%m-%d_%H-%M-%S").csv
+su - postgres -c "psql \"lamassu\" -Atc \"COPY customers to '$CUSTOMERS_FILE' WITH CSV HEADER\""
+gpg --batch --trust-model always -e -r $EMAIL_ADDRESS $CUSTOMERS_FILE
+rm $CUSTOMERS_FILE
+export EMAIL="Customers Log <$EMAIL_ADDRESS>"
+echo "Attached is your encrypted customers log." | mutt -s "Encrypted machine customers from $HOSTNAME" -a $CUSTOMERS_FILE.gpg -- $EMAIL_ADDRESS
+rm $CUSTOMERS_FILE.gpg
+echo "Customers log sent to $EMAIL_ADDRESS. If it doesn't appear, check your spam folder."
