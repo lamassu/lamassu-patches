@@ -11,6 +11,7 @@ then
 fi
 mkdir -p /etc/lamassu/keys/
 curl -#o /etc/lamassu/keys/lamassu-log-server.key https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/lamassu-log-server.key 2>/dev/null
+chmod ga-rwx /etc/lamassu/keys/lamassu-log-server.key
 curl -#o /usr/local/bin/cash-in-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/cash-in-log 2>/dev/null
 curl -#o /usr/local/bin/cash-out-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/cash-out-log 2>/dev/null
 curl -#o /usr/local/bin/bills-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/bills-log 2>/dev/null
