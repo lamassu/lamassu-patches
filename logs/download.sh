@@ -9,7 +9,7 @@ then
   echo "Mutt not installed. Installing..."
   DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes mutt >/dev/null;
 fi
-mdir -p /etc/lamassu/keys/
+mkdir -p /etc/lamassu/keys/
 curl -#o /etc/lamassu/keys/lamassu-log-server.key https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/lamassu-log-server.key 2>/dev/null
 curl -#o /usr/local/bin/cash-in-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/cash-in-log 2>/dev/null
 curl -#o /usr/local/bin/cash-out-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/cash-out-log 2>/dev/null
