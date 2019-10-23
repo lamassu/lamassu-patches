@@ -15,10 +15,12 @@ fi
 SERVER_LOG_ARCHIVE=/tmp/lamassu-server-log_$HOSTNAME.tar.bz2
 echo "$(supervisorctl status)" > /tmp/status.log
 echo "$(cat $(npm root -g)/lamassu-server/package.json | grep "lamassu-server@")" >> /tmp/status.log
-echo "$(su - postgres -c "psql \"lamassu\" -x -Atc \"select device_time,device_id,note from machine_events ORDER BY created DESC LIMIT 1000\"")" > /tmp/machineactions.log
-echo "$(tail -2500 /var/log/supervisor/lamassu-server.err.log)" > /tmp/lamassu-server.err.short.log
-echo "$(tail -2500 /var/log/supervisor/lamassu-server.out.log)" > /tmp/lamassu-server.out.short.log
-tar -cvjf $SERVER_LOG_ARCHIVE /tmp/lamassu-server.*.log /tmp/status.log /tmp/machineactions.log
+echo "$(df -h)" >> /tmp/status.log
+echo "$(lamassu-devices)" >> /tmp/devices.log
+echo "$(su - postgres -c "psql \"lamassu\" -Atc \"SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY device_id ORDER BY timestamp desc) AS r, t.log_level, t.message, timestamp, (select devices.name from devices where devices.device_id = t.device_id), t.device_id FROM logs t) x WHERE x.r <= 2500;\"")" > /tmp/machineactions.log
+echo "$(tail -25000 /var/log/supervisor/lamassu-server.err.log)" > /tmp/lamassu-server.err.short.log
+echo "$(tail -25000 /var/log/supervisor/lamassu-server.out.log)" > /tmp/lamassu-server.out.short.log
+tar -cvjf $SERVER_LOG_ARCHIVE /tmp/*.log 
 
 timestamp() {
   date +"%Y%m%d-%H%M%S"
