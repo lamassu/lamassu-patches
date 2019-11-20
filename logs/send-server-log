@@ -17,7 +17,7 @@ echo "$(supervisorctl status)" > /tmp/status.log
 echo "$(cat $(npm root -g)/lamassu-server/package.json | grep "lamassu-server@")" >> /tmp/status.log
 echo "$(df -h)" >> /tmp/status.log
 echo "$(lamassu-devices)" >> /tmp/devices.log
-echo "$(su - postgres -c "psql \"lamassu\" -Atc \"SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY device_id ORDER BY timestamp desc) AS r, t.log_level, t.message, timestamp, (select devices.name from devices where devices.device_id = t.device_id), t.device_id FROM logs t) x WHERE x.r <= 2500;\"")" > /tmp/machineactions.log
+echo "$(su - postgres -c "psql \"lamassu\" -Atc \"SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY device_id ORDER BY timestamp desc) AS r, t.log_level, timestamp, t.message, (select devices.name from devices where devices.device_id = t.device_id), t.device_id FROM logs t) x WHERE x.r <= 2500;\"")" > /tmp/machineactions.log
 echo "$(tail -25000 /var/log/supervisor/lamassu-server.err.log)" > /tmp/lamassu-server.err.short.log
 echo "$(tail -25000 /var/log/supervisor/lamassu-server.out.log)" > /tmp/lamassu-server.out.short.log
 tar -cvjf $SERVER_LOG_ARCHIVE /tmp/*.log 
