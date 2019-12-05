@@ -11,15 +11,15 @@ elif [[ ! $NAME =~ . ]]; then
   echo "send-server-log <name>"
   exit 1
 fi
-
+echo "Compiling server and machine logs, this may take a couple of minutes..."
 SERVER_LOG_ARCHIVE=/tmp/lamassu-server-log_$HOSTNAME.tar.bz2
 echo "$(supervisorctl status)" > /tmp/status.log
 echo "$(cat $(npm root -g)/lamassu-server/package.json | grep "lamassu-server@")" >> /tmp/status.log
 echo "$(df -h)" >> /tmp/status.log
 echo "$(lamassu-devices)" >> /tmp/devices.log
-echo "$(su - postgres -c "psql \"lamassu\" -Atc \"SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY device_id ORDER BY timestamp desc) AS r, t.log_level, timestamp, t.message, (select devices.name from devices where devices.device_id = t.device_id), t.device_id FROM logs t) x WHERE x.r <= 2500;\"")" > /tmp/machineactions.log
-echo "$(tail -25000 /var/log/supervisor/lamassu-server.err.log)" > /tmp/lamassu-server.err.short.log
-echo "$(tail -25000 /var/log/supervisor/lamassu-server.out.log)" > /tmp/lamassu-server.out.short.log
+echo "$(su - postgres -c "psql \"lamassu\" -Atc \"SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY device_id ORDER BY timestamp desc) AS r, t.log_level, timestamp, t.message, (select devices.name from devices where devices.device_id = t.device_id), t.device_id FROM logs t) x WHERE x.r <= 100000;\"")" > /tmp/machineactions.log
+echo "$(tail -250000 /var/log/supervisor/lamassu-server.err.log)" > /tmp/lamassu-server.err.short.log
+echo "$(tail -250000 /var/log/supervisor/lamassu-server.out.log)" > /tmp/lamassu-server.out.short.log
 tar -cvjf $SERVER_LOG_ARCHIVE /tmp/*.log 
 
 timestamp() {
@@ -30,7 +30,7 @@ HOST=165.227.82.206
 USER='ftpuser'
 REMOTEPATH=/home/ftpuser/ftp/files
 KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
-scp -i $KEYPATH -oStrictHostKeyChecking=no $SERVER_LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/$NAME-$HOSTNAME-$(timestamp).tar.bz2
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $SERVER_LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/$NAME-$HOSTNAME-$(timestamp).tar.bz2
 
 rm $SERVER_LOG_ARCHIVE
 echo "Server logs sent to our support server."
