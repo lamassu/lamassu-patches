@@ -11,7 +11,7 @@ elif [[ ! $NAME =~ . ]]; then
   echo "send-server-log <name>"
   exit 1
 fi
-
+echo "Compiling server and machine logs, this may take a couple of minutes..."
 SERVER_LOG_ARCHIVE=/tmp/lamassu-server-log_$HOSTNAME.tar.bz2
 echo "$(supervisorctl status)" > /tmp/status.log
 echo "$(cat $(npm root -g)/lamassu-server/package.json | grep "lamassu-server@")" >> /tmp/status.log
