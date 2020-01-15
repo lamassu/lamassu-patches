@@ -8,7 +8,7 @@ echo "Updating Bitcoin Cash. This may take a minute..."
 supervisorctl stop bitcoincash >> ${LOG_FILE} 2>&1
 
 echo "Downloading..."
-curl -#o $(npm root -g)/lamassu-server/lib/plugins/wallet/bitcoincashd/bitcoincashd.js https://raw.githubusercontent.com/naconner/lamassu-server/3a77d7697dedfd503db0c8c8dff7cec92bb9f139/lib/plugins/wallet/bitcoincashd/bitcoincashd.js >> ${LOG_FILE} 2>&1
+curl -#o $(npm root -g)/lamassu-server/lib/plugins/wallet/bitcoincashd/bitcoincashd.js https://raw.githubusercontent.com/lamassu/lamassu-server/defiant-dingirma/lib/plugins/wallet/bitcoincashd/bitcoincashd.js >> ${LOG_FILE} 2>&1
 curl -#o /tmp/bitcoincash.tar.gz https://download.bitcoinabc.org/0.20.5/linux/bitcoin-abc-0.20.5-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/bitcoincash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 
