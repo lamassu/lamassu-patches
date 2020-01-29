@@ -14,3 +14,4 @@ echo "Restarting lamassu-server..."
 supervisorctl restart lamassu-server &>/dev/null
 echo
 echo "Update complete."
+echo
