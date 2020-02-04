@@ -1,20 +1,23 @@
 #!/bin/bash
 set -e
 
+bold=$(tput bold)
+normal=$(tput sgr0)
+
 CUSTOMER_ID=$1
 
 if [ ! $# -eq 1 ]; then
   echo
   echo "Please include a Customer ID. Example:"
   echo
-  echo "delete-id-photo 8c6ccf25-b816-4f34-9db0-666743d45f16"
+  echo "delete-id-photo ${bold}8c6ccf25-b816-4f34-9db0-666743d45f16${normal}"
   echo
   exit 1
 elif [[ ! ${CUSTOMER_ID//-/} =~ ^[[:xdigit:]]{32}$ ]]; then
   echo
   echo "Please enter a valid Customer ID. Example:"
   echo
-  echo "delete-id-photo 8c6ccf25-b816-4f34-9db0-666743d45f16"
+  echo "delete-id-photo ${bold}8c6ccf25-b816-4f34-9db0-666743d45f16${normal}"
   echo
   exit 1
 fi
