@@ -8,17 +8,17 @@ echo "Updating Bitcoin Cash. This may take a minute..."
 supervisorctl stop bitcoincash >> ${LOG_FILE} 2>&1
 echo
 
-echo "Downloading..."
-curl -#o /tmp/bitcoincash.tar.gz https://download.bitcoinabc.org/latest/linux/bitcoin-abc-0.21.6-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading v0.21.7..."
+curl -#o /tmp/bitcoincash.tar.gz https://download.bitcoinabc.org/0.21.7/linux/bitcoin-abc-0.21.7-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/bitcoincash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating wallet..."
 mv /usr/local/bin/bitcoincashd /usr/local/bin/bitcoincashd-old >> ${LOG_FILE} 2>&1
 mv /usr/local/bin/bitcoincash-cli /usr/local/bin/bitcoin-cli-old >> ${LOG_FILE} 2>&1
-cp /tmp/bitcoin-abc-0.21.6/bin/bitcoind /usr/local/bin/bitcoincashd >> ${LOG_FILE} 2>&1
-cp /tmp/bitcoin-abc-0.21.6/bin/bitcoin-cli /usr/local/bin/bitcoincash-cli >> ${LOG_FILE} 2>&1
-rm -r /tmp/bitcoin-abc-0.21.6 >> ${LOG_FILE} 2>&1
+cp /tmp/bitcoin-abc-0.21.7/bin/bitcoind /usr/local/bin/bitcoincashd >> ${LOG_FILE} 2>&1
+cp /tmp/bitcoin-abc-0.21.7/bin/bitcoin-cli /usr/local/bin/bitcoincash-cli >> ${LOG_FILE} 2>&1
+rm -r /tmp/bitcoin-abc-0.21.7 >> ${LOG_FILE} 2>&1
 rm /tmp/bitcoincash.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
