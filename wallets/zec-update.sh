@@ -4,7 +4,7 @@ set -e
 export LOG_FILE=/tmp/zec-update.$(date +"%Y%m%d").log
 
 echo
-echo "Updating your Zcash wallet. This may take a minutes..."
+echo "Updating your Zcash wallet. This may take a minute."
 supervisorctl stop zcash >> ${LOG_FILE} 2>&1
 echo
 
@@ -35,5 +35,5 @@ supervisorctl start zcash >> ${LOG_FILE} 2>&1
 supervisorctl restart lamassu-server lamassu-admin-server >> ${LOG_FILE} 2>&1
 echo
 
-echo "Zcash is updated and running."
+echo "Zcash is updated."
 echo
