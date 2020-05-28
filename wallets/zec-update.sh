@@ -8,8 +8,8 @@ echo "Updating your Zcash wallet. This may take a minutes..."
 supervisorctl stop zcash >> ${LOG_FILE} 2>&1
 echo
 
-echo "Downloading Zcash v2.1.2-3..."
-curl -#Lo /tmp/zcash.tar.gz https://z.cash/downloads/zcash-2.1.2-3-linux64-debian-jessie.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Zcash v3.0.0..."
+curl -#Lo /tmp/zcash.tar.gz https://z.cash/downloads/zcash-3.0.0-linux64-debian-jessie.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/zcash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
@@ -18,8 +18,8 @@ mv /usr/local/bin/zcashd /usr/local/bin/zcashd-old >> ${LOG_FILE} 2>&1
 mv /usr/local/bin/zcash-cli /usr/local/bin/zcash-cli-old >> ${LOG_FILE} 2>&1
 mv /usr/local/bin/zcash-tx /usr/local/bin/zcash-tx-old >> ${LOG_FILE} 2>&1
 mv /usr/local/bin/zcash-fetch-params /usr/local/bin/zcash-fetch-params-old >> ${LOG_FILE} 2>&1
-cp /tmp/zcash-2.1.2-3/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/zcash-2.1.2-3 >> ${LOG_FILE} 2>&1
+cp /tmp/zcash-3.0.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/zcash-3.0.0 >> ${LOG_FILE} 2>&1
 rm /tmp/zcash.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
