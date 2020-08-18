@@ -8,8 +8,8 @@ echo "Updating Bitcoin Core. This may take a minute."
 supervisorctl stop bitcoin >> ${LOG_FILE} 2>&1
 echo
 
-echo "Downloading v0.19.1..."
-curl -#o /tmp/bitcoin.tar.gz https://bitcoincore.org/bin/bitcoin-core-0.19.1/bitcoin-0.19.1-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading v0.20.1..."
+curl -#o /tmp/bitcoin.tar.gz https://bitcoincore.org/bin/bitcoin-core-0.20.1/bitcoin-0.20.1-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/bitcoin.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
@@ -18,8 +18,8 @@ mv /usr/local/bin/bitcoind /usr/local/bin/bitcoind-old >> ${LOG_FILE} 2>&1
 mv /usr/local/bin/bitcoin-cli /usr/local/bin/bitcoin-cli-old >> ${LOG_FILE} 2>&1
 mv /usr/local/bin/bitcoin-tx /usr/local/bin/bitcoind-tx-old >> ${LOG_FILE} 2>&1
 mv /usr/local/bin/bitcoin-qt /usr/local/bin/bitcoind-qt-old >> ${LOG_FILE} 2>&1
-cp /tmp/bitcoin-0.19.1/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/bitcoin-0.19.1 >> ${LOG_FILE} 2>&1
+cp /tmp/bitcoin-0.20.1/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/bitcoin-0.20.1 >> ${LOG_FILE} 2>&1
 rm /tmp/bitcoin.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
