@@ -8,7 +8,7 @@ echo "Updating Bitcoin Cash. This may take a minute..."
 supervisorctl stop bitcoincash >> ${LOG_FILE} 2>&1
 echo
 
-echo "Downloading Bitcoin Cash Node v0.22.0..."
+echo "Downloading Bitcoin Cash Node v22.0.0..."
 curl -#Lo /tmp/bitcoincash.tar.gz https://github.com/bitcoin-cash-node/bitcoin-cash-node/releases/download/v22.0.0/bitcoin-cash-node-22.0.0-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/bitcoincash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
@@ -16,9 +16,9 @@ echo
 echo "Updating wallet..."
 mv /usr/local/bin/bitcoincashd /usr/local/bin/bitcoincashd-old >> ${LOG_FILE} 2>&1
 mv /usr/local/bin/bitcoincash-cli /usr/local/bin/bitcoin-cli-old >> ${LOG_FILE} 2>&1
-cp /tmp/bitcoin-cash-node-0.22.0/bin/bitcoind /usr/local/bin/bitcoincashd >> ${LOG_FILE} 2>&1
-cp /tmp/bitcoin-cash-node-0.22.0/bin/bitcoin-cli /usr/local/bin/bitcoincash-cli >> ${LOG_FILE} 2>&1
-rm -r /tmp/bitcoin-cash-node-0.22.0 >> ${LOG_FILE} 2>&1
+cp /tmp/bitcoin-cash-node-22.0.0/bin/bitcoind /usr/local/bin/bitcoincashd >> ${LOG_FILE} 2>&1
+cp /tmp/bitcoin-cash-node-22.0.0/bin/bitcoin-cli /usr/local/bin/bitcoincash-cli >> ${LOG_FILE} 2>&1
+rm -r /tmp/bitcoin-cash-node-22.0.0 >> ${LOG_FILE} 2>&1
 rm /tmp/bitcoincash.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
