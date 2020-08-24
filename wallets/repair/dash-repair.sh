@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-d=$(date -u "+%Y%m%d")
+d=$(date -u "+%Y%m%d%T")
 export LOG_FILE=/tmp/dash-update.$d.log
 
 echo
@@ -15,6 +15,8 @@ mkdir empty-$d >> ${LOG_FILE} 2>&1
 rsync -a --delete empty-$d/ database/ >> ${LOG_FILE} 2>&1
 rsync -a --delete empty-$d/ chainstate/ >> ${LOG_FILE} 2>&1
 rsync -a --delete empty-$d/ blocks/ >> ${LOG_FILE} 2>&1
+rsync -a --delete empty-$d/ evodb/ >> ${LOG_FILE} 2>&1
+rsync -a --delete empty-$d/ backups/ >> ${LOG_FILE} 2>&1
 
 echo
 echo 'Updating Dash...'
