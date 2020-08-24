@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-d=$(date -u "+%Y%m%d%T")
+d=$(date -u "+%s")
 export LOG_FILE=/tmp/dash-update.$d.log
 
 echo
