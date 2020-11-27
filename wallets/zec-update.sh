@@ -2,15 +2,22 @@
 set -e
 
 export LOG_FILE=/tmp/zec-update.$(date +"%Y%m%d").log
+SERVER_RELEASE=$(node -p -e "require('$(npm root -g)/lamassu-server/package.json').version")
+REQUIRED_RELEASE=7.5.0
 
 echo
 echo "Updating your Zcash wallet. This may take a minute."
 supervisorctl stop zcash >> ${LOG_FILE} 2>&1
-add-apt-repository -y ppa:ubuntu-toolchain-r/test >> ${LOG_FILE} 2>&1
-apt update >> ${LOG_FILE} 2>&1
-apt install -y gcc-4.9 >> ${LOG_FILE} 2>&1
-apt install -y --only-upgrade libstdc++6 >> ${LOG_FILE} 2>&1
 echo
+
+if [ $(printf "%s\n" "$SERVER_RELEASE" "$REQUIRED_RELEASE" | sort -V | head -1) = "$SERVER_RELEASE" ] ; then
+  echo "Updating dependencies..."
+  add-apt-repository -y ppa:ubuntu-toolchain-r/test >> ${LOG_FILE} 2>&1
+  apt update >> ${LOG_FILE} 2>&1
+  apt install -y gcc-4.9 >> ${LOG_FILE} 2>&1
+  apt install -y --only-upgrade libstdc++6 >> ${LOG_FILE} 2>&1
+  echo
+fi
 
 echo "Downloading Zcash v4.1.1..."
 curl -#Lo /tmp/zcash.tar.gz https://z.cash/downloads/zcash-4.1.1-linux64-debian-stretch.tar.gz >> ${LOG_FILE} 2>&1
@@ -27,16 +34,8 @@ rm -r /tmp/zcash-4.1.1 >> ${LOG_FILE} 2>&1
 rm /tmp/zcash.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
-echo "Updating wallet plugins..."
-curl -#o $(npm root -g)/lamassu-server/lib/admin/funding.js https://raw.githubusercontent.com/lamassu/lamassu-server/defiant-dingirma/lib/admin/funding.js >> ${LOG_FILE} 2>&1
-curl -#o $(npm root -g)/lamassu-server/lib/plugins/wallet/bitcoincashd/bitcoincashd.js https://raw.githubusercontent.com/lamassu/lamassu-server/defiant-dingirma/lib/plugins/wallet/bitcoincashd/bitcoincashd.js >> ${LOG_FILE} 2>&1
-curl -#o $(npm root -g)/lamassu-server/lib/plugins/wallet/bitcoind/bitcoind.js https://raw.githubusercontent.com/lamassu/lamassu-server/defiant-dingirma/lib/plugins/wallet/bitcoind/bitcoind.js >> ${LOG_FILE} 2>&1
-curl -#o $(npm root -g)/lamassu-server/lib/plugins/wallet/dashd/dashd.js https://raw.githubusercontent.com/lamassu/lamassu-server/defiant-dingirma/lib/plugins/wallet/dashd/dashd.js >> ${LOG_FILE} 2>&1
-curl -#o $(npm root -g)/lamassu-server/lib/plugins/wallet/litecoind/litecoind.js https://raw.githubusercontent.com/lamassu/lamassu-server/defiant-dingirma/lib/plugins/wallet/litecoind/litecoind.js >> ${LOG_FILE} 2>&1
-curl -#o $(npm root -g)/lamassu-server/lib/plugins/wallet/zcashd/zcashd.js https://raw.githubusercontent.com/lamassu/lamassu-server/defiant-dingirma/lib/plugins/wallet/zcashd/zcashd.js >> ${LOG_FILE} 2>&1
-
+echo "Starting wallet..."
 supervisorctl start zcash >> ${LOG_FILE} 2>&1
-supervisorctl restart lamassu-server lamassu-admin-server >> ${LOG_FILE} 2>&1
 echo
 
 echo "Zcash is updated."
