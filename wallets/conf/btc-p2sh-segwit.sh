@@ -13,7 +13,7 @@ then
     echo "Address type setting already defined, skipping..."
 else
     echo "Setting default address type in config file..."
-    echo -e "\addresstype=p2sh-segwit" >> /mnt/blockchains/bitcoin/bitcoin.conf
+    echo -e "\naddresstype=p2sh-segwit" >> /mnt/blockchains/bitcoin/bitcoin.conf
 fi
 echo
 
