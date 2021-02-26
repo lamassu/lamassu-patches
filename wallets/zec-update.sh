@@ -19,8 +19,8 @@ if [ $(printf "%s\n" "$SERVER_RELEASE" "$REQUIRED_RELEASE" | sort -V | head -1) 
   echo
 fi
 
-echo "Downloading Zcash v4.2.0..."
-curl -#Lo /tmp/zcash.tar.gz https://z.cash/downloads/zcash-4.2.0-linux64-debian-stretch.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Zcash v4.3.0..."
+curl -#Lo /tmp/zcash.tar.gz https://z.cash/downloads/zcash-4.3.0-linux64-debian-stretch.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/zcash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
@@ -29,8 +29,8 @@ mv /usr/local/bin/zcashd /usr/local/bin/zcashd-old >> ${LOG_FILE} 2>&1
 mv /usr/local/bin/zcash-cli /usr/local/bin/zcash-cli-old >> ${LOG_FILE} 2>&1
 mv /usr/local/bin/zcash-tx /usr/local/bin/zcash-tx-old >> ${LOG_FILE} 2>&1
 mv /usr/local/bin/zcash-fetch-params /usr/local/bin/zcash-fetch-params-old >> ${LOG_FILE} 2>&1
-cp /tmp/zcash-4.2.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/zcash-4.2.0 >> ${LOG_FILE} 2>&1
+cp /tmp/zcash-4.3.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/zcash-4.3.0 >> ${LOG_FILE} 2>&1
 rm /tmp/zcash.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
