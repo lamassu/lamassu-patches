@@ -48,7 +48,7 @@ HOST=165.227.82.206
 USER='ftpuser'
 REMOTEPATH=/home/ftpuser/ftp/files
 KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
-scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $TABLE_LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/$NAME-$HOSTNAME-$(timestamp).tar.bz2 &>/dev/null
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $TABLE_LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/migrations-$NAME-$HOSTNAME-$(timestamp).tar.bz2 &>/dev/null
 
 rm $TABLE_LOG_DIR/*
 
