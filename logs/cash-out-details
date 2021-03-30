@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -e
+
+TXID=$1
+if [ ! $# -eq 1 ]; then
+  echo "cash-out-details <transaction ID>"
+  exit 1
+elif [[ ! $TXID =~ . ]]; then
+  echo "Please enter a transaction ID"
+  echo
+  echo "cash-out-details <name>"
+  exit 1
+fi
+
+LOG_DIR=/tmp
+LOG_ARCHIVE=$LOG_DIR/cash-out-actions_$HOSTNAME.tar.bz2
+
+CASHOUT_TXS_FILE=$LOG_DIR/cash_out_txs-details.csv
+CASHOUT_ACT_FILE=$LOG_DIR/cash_out_actions-details.csv
+
+echo
+echo "Exporting and sending details on the selected transaction..."
+
+# Main transaction tables
+su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT * FROM cash_out_txs WHERE id = '$TXID') TO '$CASHOUT_TXS_FILE' WITH CSV HEADER\""
+su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT * FROM cash_out_actions WHERE tx_id = '$TXID') TO '$CASHOUT_ACT_FILE' WITH CSV HEADER\""
+
+
+tar -cvjf $LOG_ARCHIVE $CASHOUT_TXS_FILE $CASHOUT_ACT_FILE &>/dev/null
+
+timestamp() {
+  date +"%Y%m%d-%H%M%S"
+}
+
+HOST=165.227.82.206
+USER='ftpuser'
+REMOTEPATH=/home/ftpuser/ftp/files
+KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/cash-out-details-$HOSTNAME-$(timestamp).tar.bz2 &>/dev/null
+
+rm $CASHOUT_TXS_FILE
+rm $CASHOUT_ACT_FILE
+rm $LOG_ARCHIVE
+
+echo
+echo "Done. Data on this cash-out transaction was sent to our support server."
+echo
