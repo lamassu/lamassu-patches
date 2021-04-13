@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+cd /etc/supervisor/conf.d/
+curl -#o lamassu-machine.conf https://raw.githubusercontent.com/lamassu/lamassu-machine/dev/hardware/system/upboard/sintra/supervisor/conf.d/lamassu-machine.conf
+curl -#o lamassu-browser.conf https://raw.githubusercontent.com/lamassu/lamassu-machine/dev/hardware/system/upboard/sintra/supervisor/conf.d/lamassu-browser.conf
+curl -#o lamassu-updater.conf https://raw.githubusercontent.com/lamassu/lamassu-machine/dev/hardware/system/upboard/sintra/supervisor/conf.d/lamassu-updater.conf
+curl -#o lamassu-watchdog.conf https://raw.githubusercontent.com/lamassu/lamassu-machine/dev/hardware/system/upboard/sintra/supervisor/conf.d/lamassu-watchdog.conf
+users | grep -q ubilinux && sed -i 's/user=machine/user=ubilinux/g' lamassu-browser.conf || true
+supervisorctl update
+supervisorctl restart all
