@@ -4,20 +4,22 @@ set -e
 bold=$(tput bold)
 normal=$(tput sgr0)
 ETHCONF=/etc/supervisor/conf.d/ethereum.conf
+NEWADMIN=$(npm root -g)/lamassu-server/lib/new-admin/config/accounts.js
 
 echo
 echo "Enabling Geth option..."
 
 curl -#o $(npm root -g)/lamassu-server/lib/blockchain/common.js https://raw.githubusercontent.com/lamassu/lamassu-server/ecd4a05d90e6e326b4b1ab4bd49ed6ca11984a4b/lib/blockchain/common.js &>/dev/null
-
 curl -#o $(npm root -g)/lamassu-server/lib/blockchain/ethereum.js https://raw.githubusercontent.com/lamassu/lamassu-server/ecd4a05d90e6e326b4b1ab4bd49ed6ca11984a4b/lib/blockchain/ethereum.js &>/dev/null
-
 curl -#o $(npm root -g)/lamassu-server/lib/blockchain/install.js https://raw.githubusercontent.com/lamassu/lamassu-server/ecd4a05d90e6e326b4b1ab4bd49ed6ca11984a4b/lib/blockchain/install.js &>/dev/null
-
-curl -#o $(npm root -g)/lamassu-server/lib/new-admin/config/accounts.js https://raw.githubusercontent.com/lamassu/lamassu-server/ecd4a05d90e6e326b4b1ab4bd49ed6ca11984a4b/lib/new-admin/config/accounts.js &>/dev/null
-
 curl -#o $(npm root -g)/lamassu-server/lib/plugins/wallet/geth/base.js https://raw.githubusercontent.com/lamassu/lamassu-server/ecd4a05d90e6e326b4b1ab4bd49ed6ca11984a4b/lib/plugins/wallet/geth/base.js &>/dev/null
 
+## Don't fail if v7.4
+if test -f "$NEWADMIN"; then
+    curl -#o "$NEWADMIN" https://raw.githubusercontent.com/lamassu/lamassu-server/ecd4a05d90e6e326b4b1ab4bd49ed6ca11984a4b/lib/new-admin/config/accounts.js &>/dev/null
+fi
+
+## Ensure any existing config is set to light
 if test -f "$ETHCONF"; then
     curl -#o "$ETHCONF" https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/geth/ethereum.conf &>/dev/null
 fi
