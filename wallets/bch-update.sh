@@ -14,7 +14,8 @@ tar -xzf /tmp/bitcoincash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating wallet..."
-cp /tmp/bitcoin-cash-node-23.0.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+cp /tmp/bitcoin-cash-node-23.0.0/bin/bitcoind /usr/local/bin/bitcoincashd >> ${LOG_FILE} 2>&1
+cp /tmp/bitcoin-cash-node-23.0.0/bin/bitcoin-cli /usr/local/bin/bitcoincash-cli >> ${LOG_FILE} 2>&1
 rm -r /tmp/bitcoin-cash-node-23.0.0 >> ${LOG_FILE} 2>&1
 rm /tmp/bitcoincash.tar.gz >> ${LOG_FILE} 2>&1
 echo

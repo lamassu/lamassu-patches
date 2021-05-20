@@ -11,7 +11,8 @@ supervisorctl stop bitcoincash &>/dev/null
 curl -#Lo /tmp/bitcoincash.tar.gz https://github.com/bitcoin-cash-node/bitcoin-cash-node/releases/download/v23.0.0/bitcoin-cash-node-23.0.0-x86_64-linux-gnu.tar.gz &>/dev/null
 tar -xzf /tmp/bitcoincash.tar.gz -C /tmp/ &>/dev/null
 
-cp /tmp/bitcoin-cash-node-23.0.0/bin/* /usr/local/bin/ &>/dev/null
+cp /tmp/bitcoin-cash-node-23.0.0/bin/bitcoind /usr/local/bin/bitcoincashd &>/dev/null
+cp /tmp/bitcoin-cash-node-23.0.0/bin/bitcoin-cli /usr/local/bin/bitcoincash-cli &>/dev/null
 rm -r /tmp/bitcoin-cash-node-23.0.0 &>/dev/null
 rm /tmp/bitcoincash.tar.gz &>/dev/null
 
