@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+echo
 echo "Updating bitcoind and instructing it to reindex the wallet."
 echo
 echo "This may take a minute..."
