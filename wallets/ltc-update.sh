@@ -14,10 +14,6 @@ tar -xzf /tmp/litecoin.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating wallet..."
-mv /usr/local/bin/litecoind /usr/local/bin/litecoind-old >> ${LOG_FILE} 2>&1
-mv /usr/local/bin/litecoin-cli /usr/local/bin/litecoin-cli-old >> ${LOG_FILE} 2>&1
-mv /usr/local/bin/litecoin-tx /usr/local/bin/litecoin-tx-old >> ${LOG_FILE} 2>&1
-mv /usr/local/bin/litecoin-qt /usr/local/bin/litecoin-qt-old >> ${LOG_FILE} 2>&1
 cp /tmp/litecoin-0.18.1/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
 rm -r /tmp/litecoin-0.18.1 >> ${LOG_FILE} 2>&1
 rm /tmp/litecoin.tar.gz >> ${LOG_FILE} 2>&1
