@@ -21,6 +21,7 @@ echo "$(su - postgres -c "psql \"lamassu\" -Atc \"SELECT * FROM (SELECT ROW_NUMB
 echo "$(tail -250000 /var/log/supervisor/lamassu-server.err.log)" > /tmp/lamassu-server.err.short.log
 echo "$(tail -250000 /var/log/supervisor/lamassu-server.out.log)" > /tmp/lamassu-server.out.short.log
 echo "$(tail -250000 /var/log/supervisor/lamassu-admin-server.err.log)" > /tmp/lamassu-admin-server.err.short.log
+echo "$(tail -250000 /var/log/supervisor/lamassu-admin-server.out.log)" > /tmp/lamassu-admin-server.out.short.log
 tar -cvjf $SERVER_LOG_ARCHIVE /tmp/*.log 
 
 timestamp() {
