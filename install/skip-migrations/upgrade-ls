@@ -56,10 +56,10 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   cd $(npm root -g)/lamassu-server/ >> ${LOG_FILE} 2>&1
   npm rebuild >> ${LOG_FILE} 2>&1
 
-  rm $(npm root -g)/lamassu-server/migrations/1514981004673-add_serial_to_logs.js
-  rm $(npm root -g)/lamassu-server/migrations/1536651947391-add-device-id-to-cash-out-actions.js
-  rm $(npm root -g)/lamassu-server/migrations/1542638179228-alter-machine-pings.js
-  rm $(npm root -g)/lamassu-server/migrations/1557800959028-machine-pings-rename.js
+  rm $(npm root -g)/lamassu-server/migrations/1514981004673-add_serial_to_logs.js >> ${LOG_FILE} 2>&1
+  rm $(npm root -g)/lamassu-server/migrations/1536651947391-add-device-id-to-cash-out-actions.js >> ${LOG_FILE} 2>&1
+  rm $(npm root -g)/lamassu-server/migrations/1542638179228-alter-machine-pings.js >> ${LOG_FILE} 2>&1
+  rm $(npm root -g)/lamassu-server/migrations/1557800959028-machine-pings-rename.js >> ${LOG_FILE} 2>&1
 
   {
   decho "running migration"
