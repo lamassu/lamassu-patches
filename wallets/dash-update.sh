@@ -8,14 +8,14 @@ echo "Updating Dash Core. This may take a minute."
 supervisorctl stop dash >> ${LOG_FILE} 2>&1
 
 echo
-echo "Downloading Dash Core v0.16.1.1..."
-curl -#Lo /tmp/dash.tar.gz https://github.com/dashpay/dash/releases/download/v0.16.1.1/dashcore-0.16.1.1-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Dash Core v0.17.0.2..."
+curl -#Lo /tmp/dash.tar.gz https://github.com/dashpay/dash/releases/download/v0.17.0.2/dashcore-0.17.0.2-aarch64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/dash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 
 echo
 echo "Updating..."
-cp /tmp/dashcore-0.16.1/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/dashcore-0.16.1 >> ${LOG_FILE} 2>&1
+cp /tmp/dashcore-0.17.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/dashcore-0.17.0 >> ${LOG_FILE} 2>&1
 rm /tmp/dash.tar.gz >> ${LOG_FILE} 2>&1
 
 echo
