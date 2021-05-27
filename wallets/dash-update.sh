@@ -9,7 +9,7 @@ supervisorctl stop dash >> ${LOG_FILE} 2>&1
 
 echo
 echo "Downloading Dash Core v0.17.0.2..."
-curl -#Lo /tmp/dash.tar.gz https://github.com/dashpay/dash/releases/download/v0.17.0.2/dashcore-0.17.0.2-aarch64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+curl -#Lo /tmp/dash.tar.gz https://github.com/dashpay/dash/releases/download/v0.17.0.2/dashcore-0.17.0.2-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/dash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 
 echo

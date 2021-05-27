@@ -9,7 +9,7 @@ supervisorctl stop bitcoin >> ${LOG_FILE} 2>&1
 echo
 
 echo "Downloading v0.21.1..."
-curl -#o /tmp/bitcoin.tar.gz https://bitcoincore.org/bin/bitcoin-core-0.21.1/bitcoin-0.21.1-aarch64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+curl -#o /tmp/bitcoin.tar.gz https://bitcoincore.org/bin/bitcoin-core-0.21.1/bitcoin-0.21.1-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/bitcoin.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
