@@ -8,8 +8,8 @@ echo "Updating Dash Core. This may take a minute."
 supervisorctl stop dash >> ${LOG_FILE} 2>&1
 
 echo
-echo "Downloading Dash Core v0.17.0.2..."
-curl -#Lo /tmp/dash.tar.gz https://github.com/dashpay/dash/releases/download/v0.17.0.2/dashcore-0.17.0.2-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Dash Core v0.17.0.3..."
+curl -#Lo /tmp/dash.tar.gz https://github.com/dashpay/dash/releases/download/v0.17.0.3/dashcore-0.17.0.3-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/dash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 
 echo
@@ -19,19 +19,31 @@ rm -r /tmp/dashcore-0.17.0 >> ${LOG_FILE} 2>&1
 rm /tmp/dash.tar.gz >> ${LOG_FILE} 2>&1
 
 echo
-if grep -xq "enableprivatesend=." /mnt/blockchains/dash/dash.conf
-then
-    echo "enableprivatesend already defined, skipping..."
+if grep -xq "enableprivatesend=." /mnt/blockchains/dash/dash.conf; then
+    echo "Switching from 'PrivateSend' to 'CoinJoin'..."
+    sed -i 's/enableprivatesend/enablecoinjoin/g' /mnt/blockchains/dash/dash.conf
+elif grep -xq "enablecoinjoin=." /mnt/blockchains/dash/dash.conf; then
+    echo "enablecoinjoin already defined, skipping..."
 else
-    echo "Enabling PrivateSend in config file..."
-    echo -e "enableprivatesend=1" >> /mnt/blockchains/dash/dash.conf
+    echo "Enabling CoinJoin in config file..."
+    echo -e "enablecoinjoin=1" >> /mnt/blockchains/dash/dash.conf
 fi
-if grep -xq "privatesendautostart=." /mnt/blockchains/dash/dash.conf
-then
-    echo "privatesendautostart already defined, skipping..."
+
+if grep -xq "privatesendautostart=." /mnt/blockchains/dash/dash.conf; then
+    echo "Switching from 'PrivateSend' to 'CoinJoin'..."
+    sed -i 's/privatesendautostart/coinjoinautostart/g' /mnt/blockchains/dash/dash.conf
+elif grep -xq "coinjoinautostart=." /mnt/blockchains/dash/dash.conf; then
+    echo "coinjoinautostart already defined, skipping..."
 else
-    echo "Setting PrivateSend AutoStart in config file..."
-    echo -e "privatesendautostart=1" >> /mnt/blockchains/dash/dash.conf
+    echo "Enabling CoinJoin AutoStart in config file..."
+    echo -e "coinjoinautostart=1" >> /mnt/blockchains/dash/dash.conf
+fi
+
+if grep -xq "litemode=." /mnt/blockchains/dash/dash.conf; then
+    echo "Switching from 'LiteMode' to 'DisableGovernance'..."
+    sed -i 's/litemode/disablegovernance/g' /mnt/blockchains/dash/dash.conf
+else
+    echo "disablegovernance already defined, skipping..."
 fi
 echo
 
