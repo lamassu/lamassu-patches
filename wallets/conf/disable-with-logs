@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo
+echo "Disabling unused nodes and sending log files. This will take a minute..."
+echo
+
+cd /etc/supervisor/conf.d
+mkdir disabled
+
+mv bitcoincash.conf disabled/
+mv dash.conf disabled/
+mv litecoin.conf disabled/
+mv zcash.conf disabled/
+
+supervisorctl reread
+supervisorctl update
+
+send-server-log post-disable
+
+cd ~
+
+echo
+echo
+echo "Done. Please inform support that this script has been run."
+echo
+echo
