@@ -4,6 +4,8 @@ echo
 echo "Disabling unused nodes and sending log files. This will take a minute..."
 echo
 
+send-server-log node-disable-pre
+
 cd /etc/supervisor/conf.d
 mkdir disabled
 
@@ -12,12 +14,12 @@ mv dash.conf disabled/
 mv litecoin.conf disabled/
 mv zcash.conf disabled/
 
+cd ~
+
 supervisorctl reread
 supervisorctl update
 
-send-server-log post-disable
-
-cd ~
+send-server-log node-disable-post
 
 echo
 echo
