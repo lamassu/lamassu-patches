@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -e
 
 [ -e /tmp/simple_txs.csv ] && rm /tmp/simple_txs.csv
