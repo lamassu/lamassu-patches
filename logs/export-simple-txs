@@ -5,8 +5,8 @@ set -e
 su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT id,created,device_id,crypto_atoms,crypto_code,fiat,fiat_code,to_address FROM cash_in_txs WHERE tx_hash IS NOT NULL) TO '/tmp/simple_cash_in_txs.csv' DELIMITER ',' CSV\"" &>/dev/null
 su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT id,created,device_id,crypto_atoms,crypto_code,fiat,fiat_code,to_address FROM cash_out_txs WHERE dispense = 't') TO '/tmp/simple_cash_out_txs.csv' DELIMITER ',' CSV\"" &>/dev/null
 
-cat /tmp/simple_cash_in_txs.csv | awk 'BEGIN {FS=",";OFS=","} {$2=$2*0.00000001} {print $0}' >> /tmp/simple_cash_in_txs_fullunits.csv
-cat /tmp/simple_cash_out_txs.csv | awk 'BEGIN {FS=",";OFS=","} {$2=$2*0.00000001} {print $0}' >> /tmp/simple_cash_out_txs_fullunits.csv
+cat /tmp/simple_cash_in_txs.csv | awk 'BEGIN {FS=",";OFS=","} {$4=$4*0.00000001} {print $0}' >> /tmp/simple_cash_in_txs_fullunits.csv
+cat /tmp/simple_cash_out_txs.csv | awk 'BEGIN {FS=",";OFS=","} {$4=$4*0.00000001} {print $0}' >> /tmp/simple_cash_out_txs_fullunits.csv
 
 cat /tmp/simple_cash_in_txs_fullunits.csv /tmp/simple_cash_out_txs_fullunits.csv > /tmp/simple_txs.csv
 
