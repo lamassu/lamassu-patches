@@ -8,14 +8,14 @@ echo "Updating the Geth Ethereum wallet. This may take a minute."
 supervisorctl stop ethereum >> ${LOG_FILE} 2>&1
 echo
 
-echo "Downloading Geth v1.10.3..."
-curl -#o /tmp/ethereum.tar.gz https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.10.3-991384a7.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Geth v1.10.6..."
+curl -#o /tmp/ethereum.tar.gz https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.10.6-576681f2.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/ethereum.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating..."
-cp /tmp/geth-linux-amd64-1.10.3-991384a7/geth /usr/local/bin/geth >> ${LOG_FILE} 2>&1
-rm -r /tmp/geth-linux-amd64-1.10.3-991384a7/ >> ${LOG_FILE} 2>&1
+cp /tmp/geth-linux-amd64-1.10.6-576681f2/geth /usr/local/bin/geth >> ${LOG_FILE} 2>&1
+rm -r /tmp/geth-linux-amd64-1.10.6-576681f2/ >> ${LOG_FILE} 2>&1
 rm /tmp/ethereum.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
