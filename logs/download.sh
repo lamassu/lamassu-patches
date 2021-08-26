@@ -33,6 +33,7 @@ curl -#o /usr/local/bin/export-sanctions-log https://raw.githubusercontent.com/l
 curl -#o /usr/local/bin/trades-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/trades-log &>/dev/null
 curl -#o /usr/local/bin/trades-log-unencrypted https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/trades-log-unencrypted &>/dev/null
 curl -#o /usr/local/bin/export-trades https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/export-trades &>/dev/null
+curl -#o /usr/local/bin/cash-out-details https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/cash-out-details &>/dev/null
 chmod 755 /usr/local/bin/cash-in-log
 chmod 755 /usr/local/bin/cash-out-log
 chmod 755 /usr/local/bin/bills-log
@@ -53,6 +54,7 @@ chmod 755 /usr/local/bin/export-sanctions-log
 chmod 755 /usr/local/bin/trades-log
 chmod 755 /usr/local/bin/trades-log-unencrypted
 chmod 755 /usr/local/bin/export-trades
+chmod 755 /usr/local/bin/cash-out-details
 echo
 echo "Done! You may now use the following commands, followed by an email address:"
 echo
