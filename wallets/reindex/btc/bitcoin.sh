@@ -8,11 +8,11 @@ echo "This may take a minute..."
 
 supervisorctl stop bitcoin &>/dev/null
 
-curl -#o /tmp/bitcoin.tar.gz https://bitcoincore.org/bin/bitcoin-core-0.21.0/bitcoin-0.21.0-x86_64-linux-gnu.tar.gz &>/dev/null
+curl -#o /tmp/bitcoin.tar.gz https://bitcoincore.org/bin/bitcoin-core-0.20.1/bitcoin-0.20.1-x86_64-linux-gnu.tar.gz &>/dev/null
 tar -xzf /tmp/bitcoin.tar.gz -C /tmp/ &>/dev/null
 
-cp /tmp/bitcoin-0.21.0/bin/* /usr/local/bin/ &>/dev/null
-rm -r /tmp/bitcoin-0.21.0 &>/dev/null
+cp /tmp/bitcoin-0.20.1/bin/* /usr/local/bin/ &>/dev/null
+rm -r /tmp/bitcoin-0.20.1 &>/dev/null
 rm /tmp/bitcoin.tar.gz &>/dev/null
 
 curl -#o /etc/supervisor/conf.d/bitcoin.conf https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/reindex/btc/bitcoin-reindex.conf &>/dev/null
