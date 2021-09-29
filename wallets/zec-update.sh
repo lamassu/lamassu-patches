@@ -19,14 +19,14 @@ if [ $(printf "%s\n" "$SERVER_RELEASE" "$REQUIRED_RELEASE" | sort -V | head -1) 
   echo
 fi
 
-echo "Downloading Zcash v4.4.1..."
-curl -#Lo /tmp/zcash.tar.gz https://z.cash/downloads/zcash-4.4.1-linux64-debian-stretch.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Zcash v4.5.1..."
+curl -#Lo /tmp/zcash.tar.gz https://z.cash/downloads/zcash-4.5.1-linux64-debian-stretch.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/zcash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating wallet..."
-cp /tmp/zcash-4.4.1/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/zcash-4.4.1 >> ${LOG_FILE} 2>&1
+cp /tmp/zcash-4.5.1/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/zcash-4.5.1 >> ${LOG_FILE} 2>&1
 rm /tmp/zcash.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
