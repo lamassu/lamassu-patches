@@ -29,14 +29,14 @@ su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT * FROM cash_out_actions W
 tar -cvjf $LOG_ARCHIVE $CASHOUT_TXS_FILE $CASHOUT_ACT_FILE &>/dev/null
 
 timestamp() {
-  date +"%Y%m%d-%H%M%S"
+  date +"%Y%m%d-%H%M%S-%N"
 }
 
 HOST=165.227.82.206
 USER='ftpuser'
 REMOTEPATH=/home/ftpuser/ftp/files
 KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
-scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/cash-out-details-$HOSTNAME-$(timestamp).tar.bz2 &>/dev/null
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/cash-out-$HOSTNAME-$(timestamp).tar.bz2 &>/dev/null
 
 rm $CASHOUT_TXS_FILE
 rm $CASHOUT_ACT_FILE
