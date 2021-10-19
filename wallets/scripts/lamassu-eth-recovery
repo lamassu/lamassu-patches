@@ -11,8 +11,8 @@ const fs = pify(require('fs'))
 
 const options = require('../lib/options')
 
-const defaultPrefixPath = "m/44'/60'/1'/0'"
-const paymentPrefixPath = "m/44'/60'/0'/0'"
+const defaultPrefixPath = "m/44'/60'/0'/0'"
+const paymentPrefixPath = "m/44'/60'/1'/0'"
 
 const address = process.argv[2]
 
