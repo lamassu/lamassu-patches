@@ -6,24 +6,24 @@ if [ ! $# -eq 1 ]; then
   echo
   echo "Please enter the name of a coin in lowercase. Examples:"
   echo
-  echo "send-blockchain-logs bitcoin"
-  echo "send-blockchain-logs bitcoincash"
-  echo "send-blockchain-logs zcash"
+  echo "send-blockchain-log bitcoin"
+  echo "send-blockchain-log bitcoincash"
+  echo "send-blockchain-log zcash"
   echo
   exit 1
 elif [[ ! $CHAIN =~ . ]]; then
   echo
   echo "Please enter the name of a coin in lowercase. Examples:"
   echo
-  echo "send-blockchain-logs bitcoin"
-  echo "send-blockchain-logs bitcoincash"
-  echo "send-blockchain-logs zcash"
+  echo "send-blockchain-log bitcoin"
+  echo "send-blockchain-log bitcoincash"
+  echo "send-blockchain-log zcash"
   echo
   exit 1
 fi
 
 LOG_DIR=/tmp
-LOG_ARCHIVE=$LOG_DIR/blockchain-logs_$HOSTNAME.tar.bz2
+LOG_ARCHIVE=$LOG_DIR/blockchain-log_$HOSTNAME.tar.bz2
 
 echo
 echo "Bundling up logs from the indicated blockchain's node..."
@@ -38,7 +38,7 @@ HOST=165.227.82.206
 USER='ftpuser'
 REMOTEPATH=/home/ftpuser/ftp/files
 KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
-scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/blockchain-logs-$HOSTNAME-$CHAIN-$(timestamp).tar.bz2 &>/dev/null
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/blockchain-log-$HOSTNAME-$CHAIN-$(timestamp).tar.bz2 &>/dev/null
 
 rm $LOG_ARCHIVE
 
