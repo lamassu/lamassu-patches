@@ -9,7 +9,7 @@ echo "Downloading new support log scripts..."
 
 # Add SFTP server key
 mkdir -p /etc/lamassu/keys/
-curl -#o /etc/lamassu/keys/lamassu-log-server.key https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/lamassu-log-server.key &>/dev/null
+curl -o /etc/lamassu/keys/lamassu-log-server.key https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/lamassu-log-server.key &>/dev/null
 chmod ga-rwx /etc/lamassu/keys/lamassu-log-server.key
 
 # Download support log scripts
