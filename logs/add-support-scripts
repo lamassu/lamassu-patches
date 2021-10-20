@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -e
+
+bold=$(tput bold)
+normal=$(tput sgr0)
+
+echo
+echo "Downloading new support log scripts..."
+
+# Add SFTP server key
+mkdir -p /etc/lamassu/keys/
+curl -#o /etc/lamassu/keys/lamassu-log-server.key https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/lamassu-log-server.key &>/dev/null
+chmod ga-rwx /etc/lamassu/keys/lamassu-log-server.key
+
+# Download support log scripts
+curl -o /usr/local/bin/send-server-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/send-server-log &>/dev/null
+curl -o /usr/local/bin/send-blockchain-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/send-blockchain-log &>/dev/null
+curl -o /usr/local/bin/cash-in-details https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/cash-in-details &>/dev/null
+curl -o /usr/local/bin/cash-out-details https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/cash-out-details &>/dev/null
+
+# Make executable
+chmod +x /usr/local/bin/send-server-log
+chmod +x /usr/local/bin/send-blockchain-log
+chmod +x /usr/local/bin/cash-in-details
+chmod +x /usr/local/bin/cash-out-details
+
+echo
+echo "Done! You may now use these commands to send requested logs to our support team:"
+echo
+echo "${bold}send-server-log${normal} <your name>"
+echo "${bold}send-blockchain-log${normal} <coin name>"
+echo "${bold}cash-in-details${normal} <session ID>"
+echo "${bold}cash-out-details${normal} <session ID>"
+echo
+echo "Examples:"
+echo
+echo "${bold}send-server-log${normal} martian-moon-money"
+echo "${bold}send-blockchain-log${normal} bitcoin"
+echo "${bold}cash-in-details${normal} 550cf8f3-b2c2-41b5-9851-8f23e60c26af"
+echo "${bold}cash-out-details${normal} cd988ab7-81e3-4094-8ec2-72e264f0e805"
+echo
