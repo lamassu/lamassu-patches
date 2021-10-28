@@ -11,28 +11,53 @@ elif [[ ! $NAME =~ . ]]; then
   echo "send-server-log <name>"
   exit 1
 fi
+
+echo
+
+if [ $(dpkg-query -W -f='${Status}' aha 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  echo "'aha' not installed. Installing..."
+  echo
+  DEBIAN_FRONTEND=noninteractive apt-get install -y aha > /dev/null 2>&1
+fi
+
+if [ $(dpkg-query -W -f='${Status}' htop 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  echo "'htop' not installed. Installing..."
+  echo
+  DEBIAN_FRONTEND=noninteractive apt-get install -y htop > /dev/null 2>&1
+fi
+
 echo "Compiling server and machine logs, this may take a couple of minutes..."
+echo
+
 SERVER_LOG_ARCHIVE=/tmp/lamassu-server-log_$HOSTNAME.tar.bz2
+
 echo "$(supervisorctl status)" > /tmp/status.log
-echo "$(cat $(npm root -g)/lamassu-server/package.json | grep "lamassu-server@")" >> /tmp/status.log
-echo "$(df -h)" >> /tmp/status.log
-echo "$(su - postgres -c "psql \"lamassu\" -Atc \"select device_id, name from devices\"")" >> /tmp/devices.log
-echo "$(su - postgres -c "psql \"lamassu\" -Atc \"SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY device_id ORDER BY timestamp desc) AS r, t.log_level, timestamp, t.message, (select devices.name from devices where devices.device_id = t.device_id), t.device_id FROM logs t) x WHERE x.r <= 100000;\"")" > /tmp/machineactions.log
-echo "$(tail -250000 /var/log/supervisor/lamassu-server.err.log)" > /tmp/lamassu-server.err.short.log
-echo "$(tail -250000 /var/log/supervisor/lamassu-server.out.log)" > /tmp/lamassu-server.out.short.log
-echo "$(tail -250000 /var/log/supervisor/lamassu-admin-server.err.log)" > /tmp/lamassu-admin-server.err.short.log
-echo "$(tail -250000 /var/log/supervisor/lamassu-admin-server.out.log)" > /tmp/lamassu-admin-server.out.short.log
-tar -cvjf $SERVER_LOG_ARCHIVE /tmp/*.log 
+echo "$(cat $(npm root -g)/lamassu-server/package.json | grep "lamassu-server@")" >> /tmp/status.support.log
+echo "$(df -h)" >> /tmp/status.support.log
+echo "$(su - postgres -c "psql \"lamassu\" -Atc \"select device_id, name from devices\"")" >> /tmp/devices.support.log
+echo "$(su - postgres -c "psql \"lamassu\" -Atc \"SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY device_id ORDER BY timestamp desc) AS r, t.log_level, timestamp, t.message, (select devices.name from devices where devices.device_id = t.device_id), t.device_id FROM logs t) x WHERE x.r <= 100000;\"")" > /tmp/machineactions.support.log
+echo "$(tail -250000 /var/log/supervisor/lamassu-server.err.log)" > /tmp/lamassu-server.err.short.support.log
+echo "$(tail -250000 /var/log/supervisor/lamassu-server.out.log)" > /tmp/lamassu-server.out.short.support.log
+echo "$(tail -250000 /var/log/supervisor/lamassu-admin-server.err.log)" > /tmp/lamassu-admin-server.err.short.support.log
+echo "$(tail -250000 /var/log/supervisor/lamassu-admin-server.out.log)" > /tmp/lamassu-admin-server.out.short.support.log
+echo q | htop | aha --black --line-fix > /tmp/htop.support.html
+tar -cvjf $SERVER_LOG_ARCHIVE /tmp/*.support.log /tmp/*.support.html > /dev/null 2>&1
 
 timestamp() {
   date +"%Y%m%d-%H%M%S"
 }
 
+echo "Sending server logs..."
+echo
+
 HOST=165.227.82.206
 USER='ftpuser'
 REMOTEPATH=/home/ftpuser/ftp/files
 KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
-scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $SERVER_LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/$NAME-$HOSTNAME-$(timestamp).tar.bz2
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $SERVER_LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/$NAME-$HOSTNAME-$(timestamp).tar.bz2 > /dev/null 2>&1
 
 rm $SERVER_LOG_ARCHIVE
-echo "Server logs sent to our support server."
+echo "Server logs sent to our support server! Please let us know."
+echo
