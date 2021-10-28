@@ -228,6 +228,7 @@ module.exports = {
   MXN: {
     thickness: 0x0c,
     lengths: {
+      20: [0x7d, 0x73],
       50: [0x82, 0x78],
       100: [0x89, 0x7f],
       200: [0x90, 0x86],
