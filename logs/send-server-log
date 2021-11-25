@@ -33,7 +33,7 @@ echo
 
 SERVER_LOG_ARCHIVE=/tmp/lamassu-server-log_$HOSTNAME.tar.bz2
 
-echo "$(supervisorctl status)" > /tmp/status.log
+echo "$(supervisorctl status)" > /tmp/status.support.log
 echo "$(cat $(npm root -g)/lamassu-server/package.json | grep "lamassu-server@")" >> /tmp/status.support.log
 echo "$(df -h)" >> /tmp/status.support.log
 echo "$(su - postgres -c "psql \"lamassu\" -Atc \"select device_id, name from devices\"")" >> /tmp/devices.support.log
