@@ -19,6 +19,15 @@ rm -r /tmp/litecoin-0.18.1 >> ${LOG_FILE} 2>&1
 rm /tmp/litecoin.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
+if grep -q "changetype=" /mnt/blockchains/litecoin/litecoin.conf
+then
+    echo "changetype already defined, skipping..."
+else
+    echo "Enabling bech32 change addresses in config file..."
+    echo -e "\nchangetype=bech32" >> /mnt/blockchains/litecoin/litecoin.conf
+fi
+echo
+
 echo "Starting wallet..."
 supervisorctl start litecoin >> ${LOG_FILE} 2>&1
 echo
