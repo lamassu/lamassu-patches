@@ -19,27 +19,27 @@ rm -r /tmp/dashcore-0.17.0 >> ${LOG_FILE} 2>&1
 rm /tmp/dash.tar.gz >> ${LOG_FILE} 2>&1
 
 echo
-if grep -xq "enableprivatesend=." /mnt/blockchains/dash/dash.conf; then
+if grep -q "enableprivatesend=" /mnt/blockchains/dash/dash.conf; then
     echo "Switching from 'PrivateSend' to 'CoinJoin'..."
     sed -i 's/enableprivatesend/enablecoinjoin/g' /mnt/blockchains/dash/dash.conf
-elif grep -xq "enablecoinjoin=." /mnt/blockchains/dash/dash.conf; then
+elif grep -q "enablecoinjoin=" /mnt/blockchains/dash/dash.conf; then
     echo "enablecoinjoin already defined, skipping..."
 else
     echo "Enabling CoinJoin in config file..."
-    echo -e "enablecoinjoin=1" >> /mnt/blockchains/dash/dash.conf
+    echo -e "\nenablecoinjoin=1" >> /mnt/blockchains/dash/dash.conf
 fi
 
-if grep -xq "privatesendautostart=." /mnt/blockchains/dash/dash.conf; then
+if grep -q "privatesendautostart=" /mnt/blockchains/dash/dash.conf; then
     echo "Switching from 'PrivateSend' to 'CoinJoin'..."
     sed -i 's/privatesendautostart/coinjoinautostart/g' /mnt/blockchains/dash/dash.conf
-elif grep -xq "coinjoinautostart=." /mnt/blockchains/dash/dash.conf; then
+elif grep -q "coinjoinautostart=" /mnt/blockchains/dash/dash.conf; then
     echo "coinjoinautostart already defined, skipping..."
 else
     echo "Enabling CoinJoin AutoStart in config file..."
-    echo -e "coinjoinautostart=1" >> /mnt/blockchains/dash/dash.conf
+    echo -e "\ncoinjoinautostart=1" >> /mnt/blockchains/dash/dash.conf
 fi
 
-if grep -xq "litemode=." /mnt/blockchains/dash/dash.conf; then
+if grep -q "litemode=" /mnt/blockchains/dash/dash.conf; then
     echo "Switching from 'LiteMode' to 'DisableGovernance'..."
     sed -i 's/litemode/disablegovernance/g' /mnt/blockchains/dash/dash.conf
 else
