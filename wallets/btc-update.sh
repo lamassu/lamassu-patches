@@ -19,6 +19,15 @@ rm -r /tmp/bitcoin-22.0 >> ${LOG_FILE} 2>&1
 rm /tmp/bitcoin.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
+if grep -q "changetype=" /mnt/blockchains/bitcoin/bitcoin.conf
+then
+    echo "changetype already defined, skipping..."
+else
+    echo "Enabling bech32 change addresses in config file..."
+    echo -e "changetype=bech32" >> /mnt/blockchains/bitcoin/bitcoin.conf
+fi
+echo
+
 echo "Starting wallet..."
 supervisorctl start bitcoin >> ${LOG_FILE} 2>&1
 echo
