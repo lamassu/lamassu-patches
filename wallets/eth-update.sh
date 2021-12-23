@@ -12,14 +12,14 @@ echo "Updating Ethereum configuration file..."
 curl -#o /etc/supervisor/conf.d/ethereum.conf https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/conf/ethereum.conf >> ${LOG_FILE} 2>&1
 echo
 
-echo "Downloading Geth v1.10.13..."
-curl -#o /tmp/ethereum.tar.gz https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.10.13-7a0c19f8.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Geth v1.10.14..."
+curl -#o /tmp/ethereum.tar.gz https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.10.14-11a3a350.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/ethereum.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating..."
-cp /tmp/geth-linux-amd64-1.10.13-7a0c19f8/geth /usr/local/bin/geth >> ${LOG_FILE} 2>&1
-rm -r /tmp/geth-linux-amd64-1.10.13-7a0c19f8/ >> ${LOG_FILE} 2>&1
+cp /tmp/geth-linux-amd64-1.10.14-11a3a350/geth /usr/local/bin/geth >> ${LOG_FILE} 2>&1
+rm -r /tmp/geth-linux-amd64-1.10.14-11a3a350/ >> ${LOG_FILE} 2>&1
 rm /tmp/ethereum.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
