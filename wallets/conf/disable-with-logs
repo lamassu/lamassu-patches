@@ -1,28 +1,29 @@
 #!/bin/bash
 
 echo
-echo "Disabling unused nodes and sending log files. This will take a minute..."
+echo "Disabling nodes other than Bitcoin and sending log files. This will take a minute..."
 echo
 
-send-server-log node-disable-pre
+curl -sS https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/add-support-scripts | bash &>/dev/null
 
-cd /etc/supervisor/conf.d
-mkdir disabled
+send-server-log node-disable-pre &>/dev/null
+
+cd /etc/supervisor/conf.d &>/dev/null
+mkdir disabled &>/dev/null
 
 mv bitcoincash.conf disabled/
 mv dash.conf disabled/
+mv ethereum.conf disabled/
 mv litecoin.conf disabled/
 mv zcash.conf disabled/
 
 cd ~
 
-supervisorctl reread
-supervisorctl update
+supervisorctl reread &>/dev/null
+supervisorctl update all &>/dev/null
 
-send-server-log node-disable-post
+send-server-log node-disable-post &>/dev/null
 
-echo
 echo
 echo "Done. Please inform support that this script has been run."
-echo
 echo
