@@ -10,7 +10,7 @@ echo "Current litecoind status:"
 supervisorctl status litecoin
 echo
 echo "Current litecoind release:"
-litecoin-cli --version | sed -n '1 p'
+litecoin-cli --version
 echo
 echo "Total blocks synchronised:"
 litecoin-cli -conf=/mnt/blockchains/litecoin/litecoin.conf getblockcount

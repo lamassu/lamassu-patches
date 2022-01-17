@@ -10,7 +10,7 @@ echo "Current bitcoincashd status:"
 supervisorctl status bitcoincash
 echo
 echo "Current bitcoincashd release:"
-bitcoincash-cli --version | sed -n '1 p'
+bitcoincash-cli --version
 echo
 echo "Total blocks synchronised:"
 bitcoincash-cli -conf=/mnt/blockchains/bitcoincash/bitcoincash.conf getblockcount

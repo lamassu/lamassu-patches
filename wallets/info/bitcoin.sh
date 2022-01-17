@@ -10,7 +10,7 @@ echo "Current bitcoind status:"
 supervisorctl status bitcoin
 echo
 echo "Current bitcoind release:"
-bitcoin-cli --version | sed -n '1 p'
+bitcoin-cli --version
 echo
 echo "Total blocks synchronised:"
 bitcoin-cli -conf=/mnt/blockchains/bitcoin/bitcoin.conf getblockcount

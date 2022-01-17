@@ -10,7 +10,7 @@ echo "Current dashd status:"
 supervisorctl status dash
 echo
 echo "Current dashd release:"
-dash-cli --version | sed -n '1 p'
+dash-cli --version
 echo
 echo "Total blocks synchronised:"
 dash-cli -conf=/mnt/blockchains/dash/dash.conf getblockcount
