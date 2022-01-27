@@ -28,6 +28,15 @@ else
 fi
 echo
 
+if grep -q "listenonion=" /mnt/blockchains/bitcoin/bitcoin.conf
+then
+    echo "listenonion already defined, skipping..."
+else
+    echo "Setting 'listenonion=0' in config file..."
+    echo -e "\nlistenonion=0" >> /mnt/blockchains/bitcoin/bitcoin.conf
+fi
+echo
+
 echo "Starting wallet..."
 supervisorctl start bitcoin >> ${LOG_FILE} 2>&1
 echo
