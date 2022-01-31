@@ -30,10 +30,10 @@ fi
 
 # Use a lock file so failed scripts cannot be imediately retried
 # If not the backup created on this script would be replaced
-if ! mkdir /var/lock/lamassu-update; then
-  echo "Script is locked because of a failure." >&2
-  exit 1
-fi
+# if ! mkdir /var/lock/lamassu-update; then
+#   echo "Script is locked because of a failure." >&2
+#   exit 1
+# fi
 
 if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   echo -e "\033[1mDetected Ubuntu version: 20.04. Your operating system is up to date.\033[0m"
@@ -44,8 +44,10 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   export NPM_BIN=$(npm -g bin)
 
   decho "stopping lamassu-server"
+  set +e
   supervisorctl stop lamassu-server >> ${LOG_FILE} 2>&1
   supervisorctl stop lamassu-admin-server >> ${LOG_FILE} 2>&1
+  set -e
 
   decho "unlinking ${NPM_BIN}/lamassu* old executables"
   find ${NPM_BIN} -type l \( -name "lamassu-*" -or -name "hkdf" \) -exec rm -fv {} \; >> ${LOG_FILE} 2>&1
@@ -85,9 +87,13 @@ port = 127.0.0.1:9001
 EOF
 
   decho "updating lamassu-server"
+  set +e
+  supervisorctl reread >> ${LOG_FILE} 2>&1
   supervisorctl update lamassu-server >> ${LOG_FILE} 2>&1
   supervisorctl update lamassu-admin-server >> ${LOG_FILE} 2>&1
-  supervisorctl reload >> ${LOG_FILE} 2>&1
+  supervisorctl start lamassu-server >> ${LOG_FILE} 2>&1
+  supervisorctl start lamassu-admin-server >> ${LOG_FILE} 2>&1
+  set -e
 
   decho "updating backups conf"
   BACKUP_CMD=${NPM_BIN}/lamassu-backup-pg
