@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 set -e
 
 export LOG_FILE=/tmp/update.$(date +"%Y%m%d").log
@@ -30,10 +31,10 @@ fi
 
 # Use a lock file so failed scripts cannot be imediately retried
 # If not the backup created on this script would be replaced
-if ! mkdir /var/lock/lamassu-update; then
-  echo "Script is locked because of a failure." >&2
-  exit 1
-fi
+# if ! mkdir /var/lock/lamassu-update; then
+#  echo "Script is locked because of a failure." >&2
+#  exit 1
+# fi
 
 if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   echo -e "\033[1mDetected Ubuntu version: 20.04. Your operating system is up to date.\033[0m"
