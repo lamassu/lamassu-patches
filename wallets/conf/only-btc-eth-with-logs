@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo
+echo "Disabling nodes other than Bitcoin and Ethereum and sending log files. This will take a minute..."
+echo
+
+curl -sS https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/add-support-scripts | bash &>/dev/null
+
+send-server-log node-disable-pre &>/dev/null
+
+cd /etc/supervisor/conf.d &>/dev/null
+mkdir disabled &>/dev/null
+
+mv bitcoincash.conf disabled/
+mv dash.conf disabled/
+mv litecoin.conf disabled/
+mv zcash.conf disabled/
+
+cd ~
+
+supervisorctl reread &>/dev/null
+supervisorctl update all &>/dev/null
+
+send-server-log node-disable-post &>/dev/null
+
+echo
+echo "Done. Please inform support that this script has been run."
+echo
