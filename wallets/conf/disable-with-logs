@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo
-echo "Disabling nodes other than Bitcoin and Ethereum and sending log files. This will take a minute..."
+echo "Disabling nodes other than Bitcoin and sending log files. This will take a minute..."
 echo
 
 curl -sS https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/add-support-scripts | bash &>/dev/null
@@ -13,6 +13,7 @@ mkdir disabled &>/dev/null
 
 mv bitcoincash.conf disabled/
 mv dash.conf disabled/
+mv ethereum.conf disabled/
 mv litecoin.conf disabled/
 mv zcash.conf disabled/
 
