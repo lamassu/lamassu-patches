@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -e
+
+echo
+echo "Updating wallet nodes..."
+
+curl -sS https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/update/btc.sh | bash &>/dev/null
+curl -sS https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/update/eth.sh | bash &>/dev/null
+
+supervisorctl stop all &>/dev/null
+sleep 5s
+
+echo
+echo "Done."
+echo
+echo "Going down for a restart. You'll be logged out of the server, and can log back in within 30 seconds."
+echo
+shutdown -r now
