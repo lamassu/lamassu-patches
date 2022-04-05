@@ -8,24 +8,18 @@ echo "This may take a minute..."
 
 supervisorctl stop bitcoincash &>/dev/null
 
-curl -#Lo /tmp/bitcoincash.tar.gz https://github.com/bitcoin-cash-node/bitcoin-cash-node/releases/download/v23.0.0/bitcoin-cash-node-23.0.0-x86_64-linux-gnu.tar.gz &>/dev/null
-tar -xzf /tmp/bitcoincash.tar.gz -C /tmp/ &>/dev/null
-
-cp /tmp/bitcoin-cash-node-23.0.0/bin/bitcoind /usr/local/bin/bitcoincashd &>/dev/null
-cp /tmp/bitcoin-cash-node-23.0.0/bin/bitcoin-cli /usr/local/bin/bitcoincash-cli &>/dev/null
-rm -r /tmp/bitcoin-cash-node-23.0.0 &>/dev/null
-rm /tmp/bitcoincash.tar.gz &>/dev/null
+curl -sS https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/update/bch.sh | bash &>/dev/null
 
 curl -#o /etc/supervisor/conf.d/bitcoincash.conf https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/reindex/bch/bitcoincash-reindex.conf &>/dev/null
 
-supervisorctl reread &>/dev/null
 supervisorctl update bitcoincash &>/dev/null
+
+sleep 5s
 
 curl -#o /etc/supervisor/conf.d/bitcoincash.conf https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/reindex/bch/bitcoincash.conf &>/dev/null
 
 sleep 10s
 
-supervisorctl reread &>/dev/null
 supervisorctl update bitcoincash &>/dev/null
 
 echo
