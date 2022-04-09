@@ -8,14 +8,14 @@ echo "Updating your Zcash wallet. This may take a minute."
 supervisorctl stop zcash >> ${LOG_FILE} 2>&1
 echo
 
-echo "Downloading Zcash v4.6.0-1..."
-curl -#Lo /tmp/zcash.tar.gz https://z.cash/downloads/zcash-4.6.0-1-linux64-debian-stretch.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Zcash v4.6.0-2..."
+curl -#Lo /tmp/zcash.tar.gz https://z.cash/downloads/zcash-4.6.0-2-linux64-debian-bullseye.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/zcash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating wallet..."
-cp /tmp/zcash-4.6.0-1/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/zcash-4.6.0-1 >> ${LOG_FILE} 2>&1
+cp /tmp/zcash-4.6.0-2/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/zcash-4.6.0-2 >> ${LOG_FILE} 2>&1
 rm /tmp/zcash.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
