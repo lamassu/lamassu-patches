@@ -8,15 +8,24 @@ echo "Updating your Zcash wallet. This may take a minute."
 supervisorctl stop zcash >> ${LOG_FILE} 2>&1
 echo
 
-echo "Downloading Zcash v4.6.0-2..."
-curl -#Lo /tmp/zcash.tar.gz https://z.cash/downloads/zcash-4.6.0-2-linux64-debian-bullseye.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Zcash v4.7.0..."
+curl -#Lo /tmp/zcash.tar.gz https://download.z.cash/downloads/zcash-4.7.0-linux64-debian-bullseye.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/zcash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating wallet..."
-cp /tmp/zcash-4.6.0-2/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/zcash-4.6.0-2 >> ${LOG_FILE} 2>&1
+cp /tmp/zcash-4.7.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/zcash-4.7.0 >> ${LOG_FILE} 2>&1
 rm /tmp/zcash.tar.gz >> ${LOG_FILE} 2>&1
+echo
+
+if grep -q "walletrequirebackup=" /mnt/blockchains/zcash/zcash.conf
+then
+    echo "walletrequirebackup already defined, skipping..."
+else
+    echo "Setting 'walletrequirebackup=false' in config file..."
+    echo -e "\nwalletrequirebackup=false" >> /mnt/blockchains/zcash/zcash.conf
+fi
 echo
 
 echo "Starting wallet..."
