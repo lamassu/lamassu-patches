@@ -16,10 +16,10 @@ mkdir ethereum >> ${LOG_FILE} 2>&1
 
 echo
 echo 'Updating Geth...'
-curl -#o /tmp/ethereum.tar.gz https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.10.13-7a0c19f8.tar.gz >> ${LOG_FILE} 2>&1
+curl -#o /tmp/ethereum.tar.gz https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.10.17-25c9b49f.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/ethereum.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
-cp /tmp/geth-linux-amd64-1.10.13-7a0c19f8/geth /usr/local/bin/geth >> ${LOG_FILE} 2>&1
-rm -r /tmp/geth-linux-amd64-1.10.13-7a0c19f8/ >> ${LOG_FILE} 2>&1
+cp /tmp/geth-linux-amd64-1.10.17-25c9b49f/geth /usr/local/bin/geth >> ${LOG_FILE} 2>&1
+rm -r /tmp/geth-linux-amd64-1.10.17-25c9b49f/ >> ${LOG_FILE} 2>&1
 rm /tmp/ethereum.tar.gz >> ${LOG_FILE} 2>&1
 
 echo
