@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -e
+
+LOG_DIR=/tmp
+LOG_ARCHIVE=$LOG_DIR/customer-data.tar.gz
+
+CUSTOMERS_CSV=$LOG_DIR/customers.csv
+CUSTOMER_PHOTOS=$LOG_DIR/customer-photos.tar.gz
+
+su - postgres -c "psql \"lamassu\" -Atc \"COPY customers to '$CUSTOMERS_CSV' WITH CSV HEADER\"" &>/dev/null
+tar -czf $CUSTOMER_PHOTOS --directory=/opt/lamassu-server idphotocard frontcamera operatordata &>/dev/null
+
+tar -czf $LOG_ARCHIVE --directory=$LOG_DIR $CUSTOMERS_CSV $CUSTOMER_PHOTOS &>/dev/null
+
+rm $CUSTOMERS_CSV
+rm $CUSTOMER_PHOTOS
+
+echo
+echo "Saved to $LOG_ARCHIVE"
+echo
