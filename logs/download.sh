@@ -28,6 +28,7 @@ curl -#o /usr/local/bin/out-actions-unencrypted https://raw.githubusercontent.co
 curl -#o /usr/local/bin/export-out-actions https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/export-out-actions &>/dev/null
 curl -#o /usr/local/bin/customers-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/customers-log &>/dev/null
 curl -#o /usr/local/bin/export-customers https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/export-customers &>/dev/null
+curl -#o /usr/local/bin/export-customers-with-photos https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/export-customers-with-photos &>/dev/null
 curl -#o /usr/local/bin/sanctions-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/sanctions-log &>/dev/null
 curl -#o /usr/local/bin/export-sanctions-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/export-sanctions-log &>/dev/null
 curl -#o /usr/local/bin/trades-log https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/trades-log &>/dev/null
@@ -50,6 +51,7 @@ chmod 755 /usr/local/bin/out-actions-unencrypted
 chmod 755 /usr/local/bin/export-out-actions
 chmod 755 /usr/local/bin/customers-log
 chmod 755 /usr/local/bin/export-customers
+chmod 755 /usr/local/bin/export-customers-with-photos
 chmod 755 /usr/local/bin/sanctions-log
 chmod 755 /usr/local/bin/export-sanctions-log
 chmod 755 /usr/local/bin/trades-log
@@ -86,6 +88,7 @@ echo "export-bills"
 echo "export-cash-out"
 echo "export-out-actions"
 echo "export-customers"
+echo "export-customers-with-photos"
 echo "export-sanctions-log"
 echo "export-trades"
 echo "export-machine-logs"
