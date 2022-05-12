@@ -45,6 +45,15 @@ else
 fi
 echo
 
+if grep -q "walletrbf=" /mnt/blockchains/bitcoin/bitcoin.conf
+then
+    echo "RBF setting already defined, skipping..."
+else
+    echo "Enabling RBF in config file..."
+    echo -e "\nwalletrbf=1" >> /mnt/blockchains/bitcoin/bitcoin.conf
+fi
+echo
+
 echo "Starting wallet..."
 supervisorctl start bitcoin >> ${LOG_FILE} 2>&1
 echo
