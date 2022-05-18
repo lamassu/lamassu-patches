@@ -56,7 +56,7 @@ echo "$(df -h)" >> /tmp/status.support.log
 echo "$(su - postgres -c "psql \"lamassu\" -Atc \"select device_id, name from devices\"")" >> /tmp/devices.support.log
 
 # get machine-side logs
-echo "$(su - postgres -c "psql \"lamassu\" -Atc \"SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY device_id ORDER BY timestamp desc) AS r, t.log_level, timestamp, t.message, (select devices.name from devices where devices.device_id = t.device_id), t.device_id FROM logs t) x WHERE x.r <= 100000;\"")" > /tmp/machineactions.support.log
+echo "$(su - postgres -c "psql \"lamassu\" -Atc \"SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY device_id ORDER BY timestamp asc) AS r, t.log_level, timestamp, t.message, (select devices.name from devices where devices.device_id = t.device_id), t.device_id FROM logs t) x WHERE x.r <= 100000;\"")" > /tmp/machineactions.support.log
 
 # get server and admin logs
 echo "$(tail -250000 /var/log/supervisor/lamassu-server.err.log)" > /tmp/lamassu-server.err.short.support.log
