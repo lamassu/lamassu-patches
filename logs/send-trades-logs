@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+NAME=$1
+if [ ! $# -eq 1 ]; then
+  echo "send-trades-log <name>"
+  exit 1
+elif [[ ! $NAME =~ . ]]; then
+  echo "Please enter your name"
+  echo
+  echo "send-trades-log <name>"
+  exit 1
+fi
+
+echo
+echo "Compiling last 7 days of exchange trade attempts..."
+echo
+
+TRADES_RECORD=/tmp/lamassu-trades_$HOSTNAME.csv
+TRADES_ARCHIVE=/tmp/lamassu-trades_$HOSTNAME.csv.tar.bz2
+
+# add keys for uploading
+mkdir -p /etc/lamassu/keys/ &>/dev/null
+curl -#o /etc/lamassu/keys/lamassu-log-server.key https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/lamassu-log-server.key &>/dev/null
+chmod ga-rwx /etc/lamassu/keys/lamassu-log-server.key &>/dev/null
+
+# clean up existing logs
+rm $TRADES_RECORD &>/dev/null
+rm $TRADES_ARCHIVE &>/dev/null
+
+# export trades info
+su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT * FROM trades WHERE created < NOW() - INTERVAL '7 days') to '$TRADES_RECORD' WITH CSV HEADER\"" &>/dev/null
+
+# compress it
+tar -cvjf $TRADES_ARCHIVE $TRADES_RECORD &>/dev/null
+
+timestamp() {
+  date +"%Y%m%d-%H%M%S"
+}
+
+echo "Uploading trade logs..."
+echo
+
+HOST=165.227.82.206
+USER='ftpuser'
+REMOTEPATH=/home/ftpuser/ftp/files
+KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $TRADES_ARCHIVE $USER@$HOST:$REMOTEPATH/$NAME-$HOSTNAME-$(timestamp).csv.tar.bz2 &>/dev/null
+
+# clean up logs
+rm $TRADES_RECORD &>/dev/null
+rm $TRADES_ARCHIVE &>/dev/null
+
+echo "Trade logs sent to our support server. Thanks. Please let us know."
+echo
