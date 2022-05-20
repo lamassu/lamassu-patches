@@ -18,6 +18,7 @@ curl -o /usr/local/bin/send-blockchain-log https://raw.githubusercontent.com/lam
 curl -o /usr/local/bin/cash-in-details https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/cash-in-details &>/dev/null
 curl -o /usr/local/bin/cash-out-details https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/cash-out-details &>/dev/null
 curl -o /usr/local/bin/send-migration-info https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/send-migration-info &>/dev/null
+curl -o /usr/local/bin/send-trades-logs https://raw.githubusercontent.com/lamassu/lamassu-patches/master/logs/send-trades-logs &>/dev/null
 
 # Make executable
 chmod +x /usr/local/bin/send-server-log
@@ -25,6 +26,7 @@ chmod +x /usr/local/bin/send-blockchain-log
 chmod +x /usr/local/bin/cash-in-details
 chmod +x /usr/local/bin/cash-out-details
 chmod +x /usr/local/bin/send-migration-info
+chmod +x /usr/local/bin/send-trades-logs
 
 echo
 echo "Done! You may now use these commands to send requested logs to our support team:"
@@ -34,6 +36,7 @@ echo "${bold}send-blockchain-log${normal} <coin name>"
 echo "${bold}cash-in-details${normal} <session ID>"
 echo "${bold}cash-out-details${normal} <session ID>"
 echo "${bold}send-migration-info${normal} <your name>"
+echo "${bold}send-trades-logs${normal} <your name>"
 echo
 echo "Examples:"
 echo
@@ -42,4 +45,5 @@ echo "${bold}send-blockchain-log${normal} bitcoin"
 echo "${bold}cash-in-details${normal} 550cf8f3-b2c2-41b5-9851-8f23e60c26af"
 echo "${bold}cash-out-details${normal} cd988ab7-81e3-4094-8ec2-72e264f0e805"
 echo "${bold}send-migration-info${normal} martian-moon-money"
+echo "${bold}send-trades-logs${normal} martian-moon-money"
 echo
