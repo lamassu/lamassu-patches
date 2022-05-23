@@ -23,7 +23,7 @@ rm $TRADES_RECORD &>/dev/null
 rm $TRADES_ARCHIVE &>/dev/null
 
 # export trades info
-su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT * FROM trades WHERE created < NOW() - INTERVAL '7 days') to '$TRADES_RECORD' WITH CSV HEADER\"" &>/dev/null
+su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT * FROM trades WHERE created > NOW() - INTERVAL '7 days') to '$TRADES_RECORD' WITH CSV HEADER\"" &>/dev/null
 
 # compress it
 tar -cvjf $TRADES_ARCHIVE $TRADES_RECORD &>/dev/null
