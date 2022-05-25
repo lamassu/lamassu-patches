@@ -3,7 +3,7 @@ set -e
 
 echo
 echo "Adding the lamassu-eth-recovery script..."
-curl -#o $(npm root -g)/lamassu-server/bin/lamassu-eth-recovery https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/scripts/lamassu-eth-recovery &>/dev/null
+curl -#o $(npm root -g)/lamassu-server/bin/lamassu-eth-recovery https://raw.githubusercontent.com/lamassu/lamassu-server/v8.0.0-beta.5/bin/lamassu-eth-recovery &>/dev/null
 ln -s $(npm root -g)/lamassu-server/bin/lamassu-eth-recovery /usr/local/bin/lamassu-eth-recovery &>/dev/null
 chmod +x /usr/local/bin/lamassu-eth-recovery &>/dev/null
 echo
