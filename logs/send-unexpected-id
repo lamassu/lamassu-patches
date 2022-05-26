@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+NAME=$1
+if [ ! $# -eq 1 ]; then
+  echo "send-unexpected-id <name>"
+  exit 1
+elif [[ ! $NAME =~ . ]]; then
+  echo "Please enter your name"
+  echo
+  echo "send-unexpected-id <name>"
+  exit 1
+fi
+
+echo
+echo "Sending records for which there is unexpected ID data..."
+echo
+
+ID_RECORD=/tmp/lamassu-unexpected-id_$HOSTNAME.csv
+ID_ARCHIVE=/tmp/lamassu-unexpected-id_$HOSTNAME.csv.tar.bz2
+
+# clean up existing logs
+rm $ID_RECORD &>/dev/null
+rm $ID_ARCHIVE &>/dev/null
+
+# export card data
+su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT id_card_data_raw,id_card_data FROM customers WHERE id_card_data IS NOT NULL) to '$ID_RECORD' WITH CSV HEADER\"" &>/dev/null
+
+# compress it
+tar -cvjf $ID_ARCHIVE $ID_RECORD &>/dev/null
+
+timestamp() {
+  date +"%Y%m%d-%H%M%S"
+}
+
+echo "Uploading trade logs..."
+echo
+
+HOST=165.227.82.206
+USER='ftpuser'
+REMOTEPATH=/home/ftpuser/ftp/files
+KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $ID_ARCHIVE $USER@$HOST:$REMOTEPATH/$NAME-$HOSTNAME-$(timestamp).csv.tar.bz2 &>/dev/null
+
+# clean up logs
+rm $ID_RECORD &>/dev/null
+rm $ID_ARCHIVE &>/dev/null
+
+echo "Records sent securely to our support server. Thanks. Please let us know."
+echo
