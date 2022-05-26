@@ -23,7 +23,7 @@ rm $ID_RECORD &>/dev/null
 rm $ID_ARCHIVE &>/dev/null
 
 # export card data
-su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT id_card_data_raw,id_card_data FROM customers WHERE id_card_data IS NOT NULL) to '$ID_RECORD' WITH CSV HEADER\"" &>/dev/null
+su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT id_card_data_raw,id_card_data FROM customers WHERE id_card_data_raw IS NOT NULL OR id_card_data IS NOT NULL) to '$ID_RECORD' WITH CSV HEADER\"" &>/dev/null
 
 # compress it
 tar -cvjf $ID_ARCHIVE $ID_RECORD &>/dev/null
