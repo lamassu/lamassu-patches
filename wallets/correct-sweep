@@ -13,7 +13,7 @@ fi
 
 #Query the ID to see if it's valid, if invalid an error should be logged.
 TX=`su - postgres -c "psql \"lamassu\" -Atc \"select * from cash_out_txs where id = '$1'\""`
-TXDATA=`tail -1 /var/log/postgresql/postgresql-9.5-main.log`
+TXDATA=`tail -1 /var/log/postgresql/postgresql-*-main.log`
 
 #If TXID doesn't exist in the database the psql logs should reference that; if so, exit and print an error message.
 if [[ $TXDATA == *"$1"* ]]; then
