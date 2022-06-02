@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+NAME=$1
+if [ ! $# -eq 1 ]; then
+  echo "send-update-log <name>"
+  exit 1
+elif [[ ! $NAME =~ . ]]; then
+  echo "Please enter your name"
+  echo
+  echo "send-update-log <name>"
+  exit 1
+fi
+
+echo
+echo "Sending update logs..."
+echo
+
+UPDATE_LOGS=/tmp/update.*.log
+UPDATE_ARCHIVE=/tmp/update-logs_$HOSTNAME.tar.bz2
+
+# clean up existing archive
+rm $UPDATE_ARCHIVE &>/dev/null
+
+# compress it
+tar -cvjf $UPDATE_ARCHIVE $UPDATE_LOGS &>/dev/null
+
+timestamp() {
+  date +"%Y%m%d-%H%M%S"
+}
+
+echo "Uploading update logs..."
+echo
+
+HOST=165.227.82.206
+USER='ftpuser'
+REMOTEPATH=/home/ftpuser/ftp/files
+KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $UPDATE_ARCHIVE $USER@$HOST:$REMOTEPATH/$NAME-$HOSTNAME-$(timestamp).tar.bz2 &>/dev/null
+
+# clean up logs
+rm $UPDATE_ARCHIVE &>/dev/null
+
+echo "Update log sent to our support server. Thanks, please let us know."
+echo
