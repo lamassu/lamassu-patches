@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+if [ $(dpkg-query -W -f='${Status}' jq 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  DEBIAN_FRONTEND=noninteractive apt install -y --force-yes jq >/dev/null;
+fi
+
+echo
+bitcoin-cli -conf=/mnt/blockchains/bitcoin/bitcoin.conf listreceivedbyaddress | jq -r '.[] | "\(.address)    \(.amount)"'
+echo
