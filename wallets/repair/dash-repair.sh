@@ -34,11 +34,6 @@ mv /var/log/supervisor/dash.err.log /var/log/supervisor/dash.err.log-$d >> ${LOG
 mv /var/log/supervisor/dash.out.log /var/log/supervisor/dash.out.log-$d >> ${LOG_FILE} 2>&1
 
 echo
-echo "Setting Dash's supervisor configuration..."
-curl -#o /etc/supervisor/conf.d/dash.conf https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/repair/orig/dash.conf >> ${LOG_FILE} 2>&1
-supervisorctl reread >> ${LOG_FILE} 2>&1
-
-echo
 if grep -q "enableprivatesend=" /mnt/blockchains/dash/dash.conf; then
     echo "Switching from 'PrivateSend' to 'CoinJoin'..."
     sed -i 's/enableprivatesend/enablecoinjoin/g' /mnt/blockchains/dash/dash.conf
@@ -68,8 +63,13 @@ fi
 echo
 
 echo
+echo "Setting Dash's supervisor configuration..."
+curl -#o /etc/supervisor/conf.d/dash.conf https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/repair/orig/dash-reindex.conf >> ${LOG_FILE} 2>&1
+
+echo
 echo 'Starting Dash...'
-supervisorctl start dash >> ${LOG_FILE} 2>&1
+supervisorctl update dash >> ${LOG_FILE} 2>&1
+curl -#o /etc/supervisor/conf.d/dash.conf https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/repair/orig/dash.conf >> ${LOG_FILE} 2>&1
 
 echo
 echo 'Done!'
