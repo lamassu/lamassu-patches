@@ -29,6 +29,24 @@ else
 fi
 echo
 
+if grep -q "bind=0.0.0.0:8335" /mnt/blockchains/bitcoincash/bitcoincash.conf
+then
+    echo "bind port already updated, skipping..."
+else
+    echo "Setting 'bind=0.0.0.0:8335' in config file..."
+    sed -i 's/bind=0.0.0.0:8334/bind=0.0.0.0:8335/g' /mnt/blockchains/bitcoincash/bitcoincash.conf
+fi
+echo
+
+if grep -q "rpcport=8336" /mnt/blockchains/bitcoincash/bitcoincash.conf
+then
+    echo "rpc port already updated, skipping..."
+else
+    echo "Setting 'rpcport=8336' in config file..."
+    sed -i 's/rpcport=8335/rpcport=8336/g' /mnt/blockchains/bitcoincash/bitcoincash.conf
+fi
+echo
+
 echo "Starting wallet..."
 supervisorctl start bitcoincash >> ${LOG_FILE} 2>&1
 echo
