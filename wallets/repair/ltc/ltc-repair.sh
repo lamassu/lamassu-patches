@@ -15,19 +15,21 @@ rsync -a --delete empty-$d/ chainstate/
 rsync -a --delete empty-$d/ blocks/
 
 echo 'Updating Litecoin...'
-curl -#o /tmp/litecoin.tar.gz https://download.litecoin.org/litecoin-0.21.2.1/linux/litecoin-0.21.2.1-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+curl -#Lo /tmp/litecoin.tar.gz https://github.com/litecoin-project/litecoin/releases/download/v0.21.2.1/litecoin-0.21.2.1-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/litecoin.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 cp /tmp/litecoin-0.21.2.1/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
 rm -r /tmp/litecoin-0.21.2.1 >> ${LOG_FILE} 2>&1
 rm /tmp/litecoin.tar.gz >> ${LOG_FILE} 2>&1
 
 echo 'Clearing Litecoin logs...'
+set +e
 mv /var/log/supervisor/litecoin.err.log /var/log/supervisor/litecoin-old.err.log
 mv /var/log/supervisor/litecoin.out.log /var/log/supervisor/litecoin-old.out.log
+set -e
 
 echo "Resetting Litecoin configurations..."
 curl -#o /etc/supervisor/conf.d/litecoin.conf https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/repair/ltc/litecoin.conf >> ${LOG_FILE} 2>&1
-supervisorctl reread litecoin >> ${LOG_FILE} 2>&1
+supervisorctl reread >> ${LOG_FILE} 2>&1
 supervisorctl update litecoin >> ${LOG_FILE} 2>&1
 
 echo 'Starting Litecoin...'
