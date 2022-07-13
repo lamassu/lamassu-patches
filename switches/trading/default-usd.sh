@@ -11,5 +11,5 @@ supervisorctl start lamassu-server &>/dev/null
 echo
 echo "Done."
 echo
-echo "Note: If you update to a new server release, this script will need to be run again (until a market selector is included within the admin).
+echo "Note: If you update to a new server release, this script will need to be run again (until a market selector is included within the admin)."
 echo
