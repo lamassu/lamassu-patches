@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo
-echo "Adding ZAD : ZAR currency peg..."
+echo "Adding NAD : ZAR currency peg..."
 
 supervisorctl stop lamassu-server lamassu-admin-server &>/dev/null
 
