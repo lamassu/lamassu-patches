@@ -12,6 +12,7 @@ CA_PATH=$CERT_DIR/Lamassu_OP_Root_CA.pem
 SERVER_KEY_PATH=$KEY_DIR/Lamassu_OP.key
 SERVER_CERT_PATH=$CERT_DIR/Lamassu_OP.pem
 
+echo
 echo "Backing up SSL certificates..."
 
 mkdir -p /root/backups/cert_backup
@@ -78,4 +79,5 @@ supervisorctl restart lamassu-server lamassu-admin-server >> $LOG_FILE 2>&1
 
 rm /tmp/Lamassu_OP.csr.pem
 
+echo
 echo "Finished."
