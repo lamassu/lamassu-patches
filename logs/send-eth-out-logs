@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+NAME=$1
+if [ ! $# -eq 1 ]; then
+  echo "send-eth-out-log <name>"
+  exit 1
+elif [[ ! $NAME =~ . ]]; then
+  echo "Please enter your name"
+  echo
+  echo "send-eth-out-log <name>"
+  exit 1
+fi
+
+echo
+echo "Compiling cash-out ETH transactions..."
+echo
+
+ETH_OUT_RECORD=/tmp/lamassu-eth-out-$HOSTNAME.csv
+ETH_OUT_ARCHIVE=/tmp/lamassu-eth-out-$HOSTNAME.csv.tar.bz2
+
+# clean up existing logs
+rm $ETH_OUT_RECORD &>/dev/null
+rm $ETH_OUT_ARCHIVE &>/dev/null
+
+# export trades info
+su - postgres -c "psql \"lamassu\" -Atc \"COPY (SELECT * FROM cash_out_txs WHERE crypto_code='ETH') to '$ETH_OUT_RECORD' WITH CSV HEADER\"" &>/dev/null
+
+# compress it
+tar -cvjf $ETH_OUT_ARCHIVE $ETH_OUT_RECORD &>/dev/null
+
+timestamp() {
+  date +"%Y%m%d-%H%M%S"
+}
+
+echo "Uploading logs..."
+echo
+
+HOST=165.227.82.206
+USER='ftpuser'
+REMOTEPATH=/home/ftpuser/ftp/files
+KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $ETH_OUT_ARCHIVE $USER@$HOST:$REMOTEPATH/$NAME-$HOSTNAME-$(timestamp).csv.tar.bz2 &>/dev/null
+
+# clean up logs
+rm $ETH_OUT_RECORD &>/dev/null
+rm $ETH_OUT_ARCHIVE &>/dev/null
+
+echo "Cash-out ETH logs sent to our support server. Thanks. Please let us know."
+echo
