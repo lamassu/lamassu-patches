@@ -16,7 +16,7 @@ rsync -a --delete empty-$d/ blocks/
 echo
 echo "Disabling Zcash..."
 cd /etc/supervisor/conf.d
-mkdir disabled
+mkdir -p disabled
 mv zcash.conf disabled/
 supervisorctl reread &>/dev/null
 supervisorctl update zcash &>/dev/null
