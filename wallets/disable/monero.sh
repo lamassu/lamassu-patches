@@ -16,7 +16,7 @@ rsync -a --delete empty-$d/ lmdb/
 echo
 echo "Disabling Monero..."
 cd /etc/supervisor/conf.d
-mkdir disabled
+mkdir -p disabled
 mv monero.conf disabled/
 mv monero-wallet.conf disabled/
 supervisorctl reread &>/dev/null
