@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+NAME=$1
+if [ ! $# -eq 1 ]; then
+  echo "send-bitcoind-log <name>"
+  exit 1
+elif [[ ! $NAME =~ . ]]; then
+  echo "Please enter your name"
+  echo
+  echo "send-bitcoind-log <name>"
+  exit 1
+fi
+
+echo
+
+if [ $(dpkg-query -W -f='${Status}' aha 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  echo "'aha' not installed. Installing..."
+  echo
+  DEBIAN_FRONTEND=noninteractive apt-get install -y aha > /dev/null 2>&1
+fi
+
+if [ $(dpkg-query -W -f='${Status}' htop 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  echo "'htop' not installed. Installing..."
+  echo
+  DEBIAN_FRONTEND=noninteractive apt-get install -y htop > /dev/null 2>&1
+fi
+
+echo "Compiling server and machine logs, this may take a couple of minutes..."
+echo
+
+SERVER_LOG_ARCHIVE=/tmp/bitcoind-log_$HOSTNAME.tar.bz2
+
+# clean up existing logs
+rm $SERVER_LOG_ARCHIVE 2>/dev/null
+rm /tmp/*.support.log 2>/dev/null
+rm /tmp/*.support.html 2>/dev/null
+
+# get wallet daemon info
+echo "$(supervisorctl status)" >> /tmp/status.support.log
+echo "$(bitcoin-cli --version 2>/dev/null)" >> /tmp/status.support.log
+echo "Geth $(geth version | sed -n '2 p' 2>/dev/null)" >> /tmp/status.support.log
+echo "$(bitcoincash-cli --version 2>/dev/null)" >> /tmp/status.support.log
+echo "$(dash-cli --version 2>/dev/null)" >> /tmp/status.support.log
+echo "$(litecoin-cli --version 2>/dev/null)" >> /tmp/status.support.log
+echo "$(zcash-cli --version | sed -n '1 p' 2>/dev/null)" >> /tmp/status.support.log
+
+# get lamassu-server version
+echo "$(cat $(npm root -g)/lamassu-server/package.json | grep "lamassu-server@")" >> /tmp/status.support.log
+
+# get server disk space
+echo "$(df -h)" >> /tmp/status.support.log
+
+# get paired device ids
+echo "$(su - postgres -c "psql \"lamassu\" -Atc \"select device_id, name from devices\"")" >> /tmp/devices.support.log
+
+# get machine-side logs
+echo "$(su - postgres -c "psql \"lamassu\" -Atc \"SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY device_id ORDER BY timestamp asc) AS r, t.log_level, timestamp, t.message, (select devices.name from devices where devices.device_id = t.device_id), t.device_id FROM logs t) x WHERE x.r <= 100000;\"")" > /tmp/machineactions.support.log
+
+# get server and admin logs
+echo "$(tail -250000 /var/log/supervisor/lamassu-server.err.log)" > /tmp/lamassu-server.err.short.support.log
+echo "$(tail -250000 /var/log/supervisor/lamassu-server.out.log)" > /tmp/lamassu-server.out.short.support.log
+echo "$(tail -250000 /var/log/supervisor/lamassu-admin-server.err.log)" > /tmp/lamassu-admin-server.err.short.support.log
+echo "$(tail -250000 /var/log/supervisor/lamassu-admin-server.out.log)" > /tmp/lamassu-admin-server.out.short.support.log
+
+# get bitcoind logs
+
+echo "$(tail -250000 /var/log/supervisor/bitcoin.err.log)" > /tmp/bitcoin.err.short.support.log
+echo "$(tail -250000 /var/log/supervisor/bitcoin.out.log)" > /tmp/bitcoin.out.short.support.log
+
+# get htop
+echo q | htop | aha --black --line-fix > /tmp/htop.support.html
+
+tar -cvjf $SERVER_LOG_ARCHIVE /tmp/*.support.log /tmp/*.support.html > /dev/null 2>&1
+
+timestamp() {
+  date +"%Y%m%d-%H%M%S"
+}
+
+echo "Sending server logs..."
+echo
+
+HOST=165.227.82.206
+USER='ftpuser'
+REMOTEPATH=/home/ftpuser/ftp/files
+KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $SERVER_LOG_ARCHIVE $USER@$HOST:$REMOTEPATH/$NAME-$HOSTNAME-$(timestamp).tar.bz2 > /dev/null 2>&1
+
+rm $SERVER_LOG_ARCHIVE
+rm /tmp/*.support.log
+rm /tmp/*.support.html
+
+echo "Server logs sent to our support server! Please let us know."
+echo
