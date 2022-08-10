@@ -21,6 +21,9 @@ mv zcash.conf disabled/
 supervisorctl reread &>/dev/null
 supervisorctl update zcash &>/dev/null
 
+supervisorctl stop all &>/dev/null
+supervisorctl start all &>/dev/null
+
 echo
 echo "Done."
 echo
