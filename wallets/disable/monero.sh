@@ -22,6 +22,9 @@ mv monero-wallet.conf disabled/
 supervisorctl reread &>/dev/null
 supervisorctl update monero monero-wallet &>/dev/null
 
+supervisorctl stop all &>/dev/null
+supervisorctl start all &>/dev/null
+
 echo
 echo "Done."
 echo
