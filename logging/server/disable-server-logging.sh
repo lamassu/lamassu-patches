@@ -12,6 +12,7 @@ timestamp() {
 
 echo
 echo "Bundling up recent server logs..."
+echo
 
 supervisorctl stop lamassu-server > /dev/null 2>&1
 
