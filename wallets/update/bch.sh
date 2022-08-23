@@ -10,7 +10,7 @@ echo
 
 echo "Downloading Bitcoin Cash Node v24.1.0..."
 sourceHash=$'857b6b95c54d84756fdd86893cd238a9b100c471a0b235aca4246cca74112ca9'
-curl -#Lo /tmp/bitcoincash.tar.gz https://github.com/bitcoin-cash-node/bitcoin-cash-node/releases/download/v24.1.0/bitcoin-cash-node-24.1.0-x86_64-linux-gnu.tar.gz
+curl -#Lo /tmp/bitcoincash.tar.gz https://github.com/bitcoin-cash-node/bitcoin-cash-node/releases/download/v24.1.0/bitcoin-cash-node-24.1.0-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/bitcoincash.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
 if [ hash != sourceHash ] ; then
