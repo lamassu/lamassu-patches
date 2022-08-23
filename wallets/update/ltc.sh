@@ -9,7 +9,14 @@ supervisorctl stop litecoin >> ${LOG_FILE} 2>&1
 echo
 
 echo "Downloading v0.21.2.1..."
+sourceHash=$'6e545d1ef0842b9c4ecaf2e22b43f17fd3fba73599b0d6cc1db0c9310f1a74ff'
 curl -#o /tmp/litecoin.tar.gz https://download.litecoin.org/litecoin-0.21.2.1/linux/litecoin-0.21.2.1-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+hash=$(sha256sum /tmp/litecoin.tar.gz | awk '{print $1}' | sed 's/ *$//g')
+
+if [ hash != sourceHash ] ; then
+        echo 'Package signature do not match!'
+        exit 1
+fi
 tar -xzf /tmp/litecoin.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
