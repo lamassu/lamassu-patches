@@ -16,10 +16,10 @@ if [ $hash != $sourceHash ] ; then
         echo 'Package signature do not match!'
         exit 1
 fi
-tar -xzf /tmp/dash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
-echo
 
 supervisorctl stop dash >> ${LOG_FILE} 2>&1
+tar -xzf /tmp/dash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
+echo
 
 echo "Updating..."
 cp /tmp/dashcore-0.17.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1

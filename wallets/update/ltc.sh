@@ -16,10 +16,10 @@ if [ $hash != $sourceHash ] ; then
         echo 'Package signature do not match!'
         exit 1
 fi
-tar -xzf /tmp/litecoin.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
-echo
 
 supervisorctl stop litecoin >> ${LOG_FILE} 2>&1
+tar -xzf /tmp/litecoin.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
+echo
 
 echo "Updating wallet..."
 cp /tmp/litecoin-0.21.2.1/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1

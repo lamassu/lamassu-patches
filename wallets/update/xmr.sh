@@ -16,10 +16,10 @@ if [ $hash != $sourceHash ] ; then
         echo 'Package signature do not match!'
         exit 1
 fi
-tar -xf /tmp/monero.tar.bz2 -C /tmp/ >> ${LOG_FILE} 2>&1
-echo
 
 supervisorctl stop monero monero-wallet >> ${LOG_FILE} 2>&1
+tar -xf /tmp/monero.tar.bz2 -C /tmp/ >> ${LOG_FILE} 2>&1
+echo
 
 echo "Updating wallet..."
 cp /tmp/monero-x86_64-linux-gnu-v0.18.1.0/monerod /usr/local/bin/ >> ${LOG_FILE} 2>&1

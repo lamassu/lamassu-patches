@@ -20,10 +20,10 @@ if [ $hash != $sourceHash ] ; then
         echo 'Package signature do not match!'
         exit 1
 fi
-tar -xzf /tmp/ethereum.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
-echo
 
 supervisorctl stop ethereum >> ${LOG_FILE} 2>&1
+tar -xzf /tmp/ethereum.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
+echo
 
 echo "Updating..."
 cp /tmp/geth-linux-amd64-1.10.21-67109427/geth /usr/local/bin/geth >> ${LOG_FILE} 2>&1

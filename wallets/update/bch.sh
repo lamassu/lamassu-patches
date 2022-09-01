@@ -16,10 +16,11 @@ if [ $hash != $sourceHash ] ; then
         echo 'Package signature do not match!'
         exit 1
 fi
+
+supervisorctl stop bitcoincash >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/bitcoincash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
-supervisorctl stop bitcoincash >> ${LOG_FILE} 2>&1
 
 echo "Updating wallet..."
 cp /tmp/bitcoin-cash-node-24.1.0/bin/bitcoind /usr/local/bin/bitcoincashd >> ${LOG_FILE} 2>&1
