@@ -5,13 +5,22 @@ export LOG_FILE=/tmp/bch-update.$(date +"%Y%m%d").log
 
 echo
 echo "Updating Bitcoin Cash. This may take a minute..."
-supervisorctl stop bitcoincash >> ${LOG_FILE} 2>&1
 echo
 
 echo "Downloading Bitcoin Cash Node v24.1.0..."
+sourceHash=$'857b6b95c54d84756fdd86893cd238a9b100c471a0b235aca4246cca74112ca9'
 curl -#Lo /tmp/bitcoincash.tar.gz https://github.com/bitcoin-cash-node/bitcoin-cash-node/releases/download/v24.1.0/bitcoin-cash-node-24.1.0-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+hash=$(sha256sum /tmp/bitcoincash.tar.gz | awk '{print $1}' | sed 's/ *$//g')
+
+if [ $hash != $sourceHash ] ; then
+        echo 'Package signature do not match!'
+        exit 1
+fi
+
+supervisorctl stop bitcoincash >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/bitcoincash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
+
 
 echo "Updating wallet..."
 cp /tmp/bitcoin-cash-node-24.1.0/bin/bitcoind /usr/local/bin/bitcoincashd >> ${LOG_FILE} 2>&1

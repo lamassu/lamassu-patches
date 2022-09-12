@@ -5,11 +5,19 @@ export LOG_FILE=/tmp/btc-update.$(date +"%Y%m%d").log
 
 echo
 echo "Updating Bitcoin Core. This may take a minute."
-supervisorctl stop bitcoin >> ${LOG_FILE} 2>&1
 echo
 
 echo "Downloading v23.0..."
+sourceHash=$'2cca490c1f2842884a3c5b0606f179f9f937177da4eadd628e3f7fd7e25d26d0'
 curl -#o /tmp/bitcoin.tar.gz https://bitcoincore.org/bin/bitcoin-core-23.0/bitcoin-23.0-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+hash=$(sha256sum /tmp/bitcoin.tar.gz | awk '{print $1}' | sed 's/ *$//g')
+
+if [ $hash != $sourceHash ] ; then
+        echo 'Package signature do not match!'
+        exit 1
+fi
+
+supervisorctl stop bitcoin >> ${LOG_FILE} 2>&1
 tar -xzf /tmp/bitcoin.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 

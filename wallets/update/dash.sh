@@ -5,14 +5,22 @@ export LOG_FILE=/tmp/dash-update.$(date +"%Y%m%d").log
 
 echo
 echo "Updating Dash Core. This may take a minute."
-supervisorctl stop dash >> ${LOG_FILE} 2>&1
 
 echo
 echo "Downloading Dash Core v0.17.0.3..."
+sourceHash=$'d4086b1271589e8d72e6ca151a1c8f12e4dc2878d60ec69532d0c48e99391996'
 curl -#Lo /tmp/dash.tar.gz https://github.com/dashpay/dash/releases/download/v0.17.0.3/dashcore-0.17.0.3-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
-tar -xzf /tmp/dash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
+hash=$(sha256sum /tmp/dash.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
+if [ $hash != $sourceHash ] ; then
+        echo 'Package signature do not match!'
+        exit 1
+fi
+
+supervisorctl stop dash >> ${LOG_FILE} 2>&1
+tar -xzf /tmp/dash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
+
 echo "Updating..."
 cp /tmp/dashcore-0.17.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
 rm -r /tmp/dashcore-0.17.0 >> ${LOG_FILE} 2>&1
