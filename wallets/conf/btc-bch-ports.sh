@@ -8,6 +8,8 @@ echo
 echo "Deploying the patch. This will take about 10 seconds, after which, your server will restart."
 echo
 
+supervisorctl stop all &>/dev/null
+
 ## Bitcoin
 
 if grep -xq "bind=.*" $BTC_CONF; then
@@ -58,8 +60,7 @@ else
     sed -i 's/rpcport=8335/rpcport=8336/g' $BCH_CONF
 fi
 
-supervisorctl stop all &>/dev/null
-sleep 10s &>/dev/null
+sleep 5s &>/dev/null
 
 echo
 echo "Done!"
