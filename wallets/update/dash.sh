@@ -8,8 +8,8 @@ echo "Updating Dash Core. This may take a minute."
 
 echo
 echo "Downloading Dash Core v18.0.1..."
-sourceHash=$'3ad6125a67cb76d195c9bae778e5a717e98436b98951a819411671d05aadc2ce'
-curl -#Lo /tmp/dash.tar.gz https://github.com/dashpay/dash/releases/download/v18.0.1/dashcore-18.0.1-aarch64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+sourceHash=$'c1fea7a83bbef34a358112f2a980ca4eb213aaea2f82486c6460100b2f22e317'
+curl -#Lo /tmp/dash.tar.gz https://github.com/dashpay/dash/releases/download/v18.0.1/dashcore-18.0.1-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/dash.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
 if [ $hash != $sourceHash ] ; then
