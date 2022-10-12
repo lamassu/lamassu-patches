@@ -7,9 +7,9 @@ echo
 echo "Updating your Monero wallet. This may take a minute."
 echo
 
-echo "Downloading Monero v0.18.1.0..."
-sourceHash=$'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
-curl -#Lo /tmp/monero.tar.bz2 https://downloads.getmonero.org/cli/monero-linux-x64-v0.18.1.0.tar.bz2 >> ${LOG_FILE} 2>&1
+echo "Downloading Monero v0.18.1.2..."
+sourceHash=$'7d51e7072351f65d0c7909e745827cfd3b00abe5e7c4cc4c104a3c9b526da07e'
+curl -#Lo /tmp/monero.tar.bz2 https://downloads.getmonero.org/cli/monero-linux-x64-v0.18.1.2.tar.bz2 >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/monero.tar.bz2 | awk '{print $1}' | sed 's/ *$//g')
 
 if [ $hash != $sourceHash ] ; then
@@ -22,9 +22,9 @@ tar -xf /tmp/monero.tar.bz2 -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating wallet..."
-cp /tmp/monero-x86_64-linux-gnu-v0.18.1.0/monerod /usr/local/bin/ >> ${LOG_FILE} 2>&1
-cp /tmp/monero-x86_64-linux-gnu-v0.18.1.0/monero-wallet-rpc /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/monero-x86_64-linux-gnu-v0.18.1.0 >> ${LOG_FILE} 2>&1
+cp /tmp/monero-x86_64-linux-gnu-v0.18.1.2/monerod /usr/local/bin/ >> ${LOG_FILE} 2>&1
+cp /tmp/monero-x86_64-linux-gnu-v0.18.1.2/monero-wallet-rpc /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/monero-x86_64-linux-gnu-v0.18.1.2 >> ${LOG_FILE} 2>&1
 rm /tmp/monero.tar.bz2 >> ${LOG_FILE} 2>&1
 echo
 
