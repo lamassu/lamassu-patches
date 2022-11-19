@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+LOG_DIR=/tmp
+IDPHOTO_ARCHIVE=$LOG_DIR/failed-id-archive_$HOSTNAME.tar.bz2
+
+echo
+echo "Bundling up photos from unsuccessful ID scan attempts..."
+
+tar -cjf $IDPHOTO_ARCHIVE /opt/lamassu-server/operatordata &>/dev/null
+
+timestamp() {
+  date +"%Y%m%d-%H%M%S"
+}
+
+HOST=165.227.82.206
+USER='ftpuser'
+REMOTEPATH=/home/ftpuser/ftp/files
+KEYPATH=/etc/lamassu/keys/lamassu-log-server.key
+scp -i $KEYPATH -oStrictHostKeyChecking=no -P 22 $IDPHOTO_ARCHIVE $USER@$HOST:$REMOTEPATH/failed-id-archive-$HOSTNAME-$(timestamp).tar.bz2 &>/dev/null
+
+rm $IDPHOTO_ARCHIVE
+
+echo
+echo "Done. Photo captures of unsuccessful ID scan attempts have been securely uploaded to our support server."
+echo
