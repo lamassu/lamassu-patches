@@ -7,7 +7,7 @@ IDPHOTO_ARCHIVE=$LOG_DIR/failed-id-archive_$HOSTNAME.tar.bz2
 echo
 echo "Bundling up photos from unsuccessful ID scan attempts..."
 
-tar -cjf $IDPHOTO_ARCHIVE /opt/lamassu-server/idphotocard &>/dev/null
+tar -cjf $IDPHOTO_ARCHIVE /opt/lamassu-server/idphotocard /opt/lamassu-server/operatordata &>/dev/null
 
 timestamp() {
   date +"%Y%m%d-%H%M%S"
