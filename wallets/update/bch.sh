@@ -7,9 +7,9 @@ echo
 echo "Updating Bitcoin Cash. This may take a minute..."
 echo
 
-echo "Downloading Bitcoin Cash Node v24.1.0..."
-sourceHash=$'857b6b95c54d84756fdd86893cd238a9b100c471a0b235aca4246cca74112ca9'
-curl -#Lo /tmp/bitcoincash.tar.gz https://github.com/bitcoin-cash-node/bitcoin-cash-node/releases/download/v24.1.0/bitcoin-cash-node-24.1.0-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Bitcoin Cash Node v25.0.0..."
+sourceHash=$'f2383a35772544cf4c349429238e19b0771f0e61862726663fceea9d1e3ba4c2'
+curl -#Lo /tmp/bitcoincash.tar.gz https://github.com/bitcoin-cash-node/bitcoin-cash-node/releases/download/v25.0.0/bitcoin-cash-node-25.0.0-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/bitcoincash.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
 if [ $hash != $sourceHash ] ; then
@@ -23,9 +23,9 @@ echo
 
 
 echo "Updating wallet..."
-cp /tmp/bitcoin-cash-node-24.1.0/bin/bitcoind /usr/local/bin/bitcoincashd >> ${LOG_FILE} 2>&1
-cp /tmp/bitcoin-cash-node-24.1.0/bin/bitcoin-cli /usr/local/bin/bitcoincash-cli >> ${LOG_FILE} 2>&1
-rm -r /tmp/bitcoin-cash-node-24.1.0 >> ${LOG_FILE} 2>&1
+cp /tmp/bitcoin-cash-node-25.0.0/bin/bitcoind /usr/local/bin/bitcoincashd >> ${LOG_FILE} 2>&1
+cp /tmp/bitcoin-cash-node-25.0.0/bin/bitcoin-cli /usr/local/bin/bitcoincash-cli >> ${LOG_FILE} 2>&1
+rm -r /tmp/bitcoin-cash-node-25.0.0 >> ${LOG_FILE} 2>&1
 rm /tmp/bitcoincash.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
