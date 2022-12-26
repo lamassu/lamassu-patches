@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+
+if [[ ! -f "/usr/local/bin/zec-deposit-history" ]];
+then
+  curl -o /usr/local/bin/zec-deposit-history https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/scripts/zec-deposit-history &>/dev/null
+  chmod +x /usr/local/bin/zec-deposit-history
+fi
+
+if [ $(dpkg-query -W -f='${Status}' jq 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  DEBIAN_FRONTEND=noninteractive apt install -y --force-yes jq >/dev/null;
+fi
+
+echo
+zcash-cli -conf=/mnt/blockchains/zcash/zcash.conf listreceivedbyaddress | jq -r '.[] | "\(.address)    \(.amount)"'
+echo
