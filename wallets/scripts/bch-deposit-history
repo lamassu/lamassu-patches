@@ -13,5 +13,5 @@ then
 fi
 
 echo
-bitcoincash-cli -conf=/mnt/blockchains/bitcoincash/bitcoin.conf listreceivedbyaddress | jq -r '.[] | "\(.address)    \(.amount)"'
+bitcoincash-cli -conf=/mnt/blockchains/bitcoincash/bitcoincash.conf listreceivedbyaddress | jq -r '.[] | "\(.address)    \(.amount)"'
 echo
