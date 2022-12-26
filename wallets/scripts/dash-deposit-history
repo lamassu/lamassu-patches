@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+
+if [[ ! -f "/usr/local/bin/dash-deposit-history" ]];
+then
+  curl -o /usr/local/bin/dash-deposit-history https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/scripts/dash-deposit-history &>/dev/null
+  chmod +x /usr/local/bin/dash-deposit-history
+fi
+
+if [ $(dpkg-query -W -f='${Status}' jq 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  DEBIAN_FRONTEND=noninteractive apt install -y --force-yes jq >/dev/null;
+fi
+
+echo
+dash-cli -conf=/mnt/blockchains/dash/dash.conf listreceivedbyaddress | jq -r '.[] | "\(.address)    \(.amount)"'
+echo
