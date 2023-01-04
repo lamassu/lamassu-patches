@@ -124,6 +124,9 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
 port = 127.0.0.1:9001
 EOF
 
+  decho "adding back db migration"
+  su - postgres -c "psql \"lamassu\" -Atc \"ALTER TABLE cash_in_txs ADD COLUMN cash_in_fee_crypto numeric(30) not null\""
+
   decho "updating lamassu-server"
   supervisorctl update >> ${LOG_FILE} 2>&1
   supervisorctl start lamassu-server >> ${LOG_FILE} 2>&1
@@ -163,8 +166,8 @@ fi
 # reset terminal to link new executables
 hash -r
 
-rm -r /var/lock/lamassu-update
+rmdir /var/lock/lamassu-update
 
 if [ -d /var/lock/lamassu-eth-pending-sweep-finished ]; then
-  rm -r /var/lock/lamassu-eth-pending-sweep-finished
+  rmdir /var/lock/lamassu-eth-pending-sweep-finished
 fi
