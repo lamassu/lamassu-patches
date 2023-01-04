@@ -125,7 +125,7 @@ port = 127.0.0.1:9001
 EOF
 
   decho "adding back db migration"
-  su - postgres -c "psql \"lamassu\" -Atc \"ALTER TABLE cash_in_txs ADD COLUMN cash_in_fee_crypto numeric(30) not null\""
+  su - postgres -c "psql \"lamassu\" -Atc \"ALTER TABLE cash_in_txs ADD COLUMN cash_in_fee_crypto numeric(30) DEFAULT 0 NOT NULL\""
 
   decho "updating lamassu-server"
   supervisorctl update >> ${LOG_FILE} 2>&1
