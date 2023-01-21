@@ -8,7 +8,7 @@ echo "Updating Bitcoin Cash. This may take a minute..."
 echo
 
 echo "Downloading Bitcoin Cash Node v26.0.0..."
-sourceHash=$'f2383a35772544cf4c349429238e19b0771f0e61862726663fceea9d1e3ba4c2'
+sourceHash=$'26c437dfe0137f69fca5c1da81578822d275d3c7662ba439e70d64c030873127'
 curl -#Lo /tmp/bitcoincash.tar.gz https://github.com/bitcoin-cash-node/bitcoin-cash-node/releases/download/v26.0.0/bitcoin-cash-node-26.0.0-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/bitcoincash.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
