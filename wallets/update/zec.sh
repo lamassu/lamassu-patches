@@ -36,6 +36,15 @@ else
 fi
 echo
 
+if grep -q "allowdeprecated=getnewaddress" /mnt/blockchains/zcash/zcash.conf
+then
+    echo "allowdeprecated=getnewaddress already defined, skipping..."
+else
+    echo "Setting 'allowdeprecated=getnewaddress' in config file..."
+    echo -e "\nallowdeprecated=getnewaddress" >> /mnt/blockchains/zcash/zcash.conf
+fi
+echo
+
 echo "Starting wallet..."
 supervisorctl start zcash >> ${LOG_FILE} 2>&1
 echo
