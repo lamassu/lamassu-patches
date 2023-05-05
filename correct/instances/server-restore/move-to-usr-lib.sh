@@ -17,3 +17,8 @@ supervisorctl reread
 supervisorctl update lamassu-server lamassu-admin-server
 echo
 echo "Done."
+echo
+echo "Displaying status of supervisor processes..."
+echo
+supervisorctl status
+echo
