@@ -5,8 +5,6 @@ export LOG_FILE=/tmp/bitcoin-update.$d.log
 
 echo
 echo 'Stopping bitcoind...'
-stop bitcoin
-sleep 5s
 supervisorctl stop bitcoin >> ${LOG_FILE} 2>&1
 sleep 5s
 killall bitcoind >> ${LOG_FILE} 2>&1
