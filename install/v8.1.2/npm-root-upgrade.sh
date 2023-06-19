@@ -14,6 +14,8 @@ fi
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 UBUNTU_VERSION=$(lsb_release -rs)
+NODE_MODULES=$(npm -g root)
+CONFIG_DIR=/etc/lamassu
 
 rm -f ${LOG_FILE}
 
@@ -111,7 +113,7 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   if [ -d "/usr/lib/node_modules/lamassu-server" ]; then
       BKP_NAME=lamassu-server-${timestamp}
       decho "renaming old lamassu-server instance to ${BKP_NAME}"
-      mv -v "/usr/lib/node_modules/lamassu-server" "/usr/lib/node_modules/${BKP_NAME}" >> ${LOG_FILE} 2>&1
+      mv -v "${NODE_MODULES}/lamassu-server" "${NODE_MODULES}/${BKP_NAME}" >> ${LOG_FILE} 2>&1
   fi
 
   decho "updating lamassu-server to Grand Gilgamesh v8.1.1..."
@@ -123,9 +125,7 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
       echo 'Package signature does not match!'
       exit 1
   fi
-
-  NODE_MODULES=$(npm -g root)
-  
+ 
   tar -xzf /tmp/lamassu-server.tar.gz -C $NODE_MODULES/ >> $LOG_FILE 2>&1
 
   decho "Creating symlinks..."
@@ -135,8 +135,6 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   decho "rebuilding npm deps"
   cd $(npm root -g)/lamassu-server/ >> ${LOG_FILE} 2>&1
   npm rebuild >> ${LOG_FILE} 2>&1
-
-  CONFIG_DIR=/etc/lamassu
 
   if [ ! -f $CONFIG_DIR/.env ]; then
     decho "Environment file not found, creating one..."
