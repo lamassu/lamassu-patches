@@ -110,7 +110,7 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   decho "unlinking old executables"
   for i in lamassu-* hkdf bip39; do rm -fv $NPM_BIN/$i; done >> ${LOG_FILE} 2>&1
 
-  if [ -d "/usr/lib/node_modules/lamassu-server" ]; then
+  if [ -d "{$NODE_MODULES}/lamassu-server" ]; then
       BKP_NAME=lamassu-server-${timestamp}
       decho "renaming old lamassu-server instance to ${BKP_NAME}"
       mv -v "${NODE_MODULES}/lamassu-server" "${NODE_MODULES}/${BKP_NAME}" >> ${LOG_FILE} 2>&1
