@@ -136,18 +136,18 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   cd $(npm root -g)/lamassu-server/ >> ${LOG_FILE} 2>&1
   npm rebuild >> ${LOG_FILE} 2>&1
 
-  if [ ! -f $CONFIG_DIR/.env ]; then
-    decho "Environment file not found, creating one..."
-    touch $CONFIG_DIR/.env
-    decho "Creating environment symlink..."
-    cp --symbolic-link $CONFIG_DIR/.env $NODE_MODULES/lamassu-server/.env >> $LOG_FILE 2>&1
-    OPTIONS_POSTGRES_PW=$(grep -oP '(?<="postgresql": ")[^"]*' $CONFIG_DIR/lamassu.json | sed -nr 's/.*:(.*)@.*/\1/p')
-    OPTIONS_HOSTNAME=$(grep -oP '(?<="hostname": ")[^"]*' $CONFIG_DIR/lamassu.json)
-    node $NODE_MODULES/lamassu-server/tools/build-prod-env.js --db-password $OPTIONS_POSTGRES_PW --hostname $OPTIONS_HOSTNAME
-  else
-    decho "Creating environment symlink..."
-    cp --symbolic-link $CONFIG_DIR/.env $NODE_MODULES/lamassu-server/.env >> $LOG_FILE 2>&1
-  fi
+#  if [ ! -f $CONFIG_DIR/.env ]; then
+#    decho "Environment file not found, creating one..."
+#    touch $CONFIG_DIR/.env
+#    decho "Creating environment symlink..."
+#    cp --symbolic-link $CONFIG_DIR/.env $NODE_MODULES/lamassu-server/.env >> $LOG_FILE 2>&1
+#    OPTIONS_POSTGRES_PW=$(grep -oP '(?<="postgresql": ")[^"]*' $CONFIG_DIR/lamassu.json | sed -nr 's/.*:(.*)@.*/\1/p')
+#    OPTIONS_HOSTNAME=$(grep -oP '(?<="hostname": ")[^"]*' $CONFIG_DIR/lamassu.json)
+#    node $NODE_MODULES/lamassu-server/tools/build-prod-env.js --db-password $OPTIONS_POSTGRES_PW --hostname $OPTIONS_HOSTNAME
+#  else
+#    decho "Creating environment symlink..."
+#    cp --symbolic-link $CONFIG_DIR/.env $NODE_MODULES/lamassu-server/.env >> $LOG_FILE 2>&1
+#  fi
 
   {
   decho "running migration"
