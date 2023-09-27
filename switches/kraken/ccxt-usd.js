@@ -8,8 +8,9 @@ const binanceus = require('../exchange/binanceus')
 const cex = require('../exchange/cex')
 const bitpay = require('../ticker/bitpay')
 const binance = require('../exchange/binance')
+const logger = require('../../logger')
 
-const { BTC, BCH, DASH, ETH, LTC, ZEC, USDT } = COINS
+const { BTC, BCH, DASH, ETH, LTC, ZEC, USDT, TRX, USDT_TRON } = COINS
 
 const ALL = {
   cex: cex,
@@ -19,9 +20,8 @@ const ALL = {
   itbit: itbit,
   bitpay: bitpay,
   coinbase: {
-    CRYPTO: [BTC, ETH, LTC, DASH, ZEC, BCH, USDT],
-    FIAT: 'ALL_CURRENCIES',
-    DEFAULT_FIAT_MARKET: 'USD'
+    CRYPTO: [BTC, ETH, LTC, DASH, ZEC, BCH, USDT, USDT_TRON, TRX],
+    FIAT: 'ALL_CURRENCIES'
   },
   binance: binance
 }
@@ -30,8 +30,11 @@ function buildMarket (fiatCode, cryptoCode, serviceName) {
   if (!_.includes(cryptoCode, ALL[serviceName].CRYPTO)) {
     throw new Error('Unsupported crypto: ' + cryptoCode)
   }
-
-  if (_.isNil(fiatCode)) throw new Error('Market pair building failed: Missing fiat code')
+  const fiatSupported = ALL[serviceName].FIAT
+  if (fiatSupported !== 'ALL_CURRENCIES' && !_.includes(fiatCode, fiatSupported)) {
+    logger.info('Building a market for an unsupported fiat. Defaulting to USD market')
+    return cryptoCode + '/' + 'USD'
+  }
   return cryptoCode + '/' + fiatCode
 }
 
@@ -45,8 +48,4 @@ function isConfigValid (config, fields) {
   return _.every(it => it || it === 0)(values)
 }
 
-function defaultFiatMarket (serviceName) {
-  return ALL[serviceName].DEFAULT_FIAT_MARKET
-}
-
-module.exports = { buildMarket, ALL, verifyFiatSupport, isConfigValid, defaultFiatMarket }
+module.exports = { buildMarket, ALL, verifyFiatSupport, isConfigValid }
