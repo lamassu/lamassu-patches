@@ -1,44 +1,29 @@
-// Note: Using DeX3/npm-kraken-api to adjust timeout time
-const Kraken = require('kraken-api')
 const _ = require('lodash/fp')
 
-const common = require('../../common/kraken')
-const coinUtils = require('../../../coin-utils')
+const { ORDER_TYPES } = require('./consts')
+const { COINS } = require('@lamassu/coins')
 
-var PAIRS = common.PAIRS
+const ORDER_TYPE = ORDER_TYPES.MARKET
+const { BTC, BCH, DASH, ETH, LTC, ZEC, XMR, USDT, TRX, USDT_TRON } = COINS
+const CRYPTO = [BTC, ETH, LTC, DASH, ZEC, BCH, XMR, USDT, TRX, USDT_TRON]
+const FIAT = ['USD', 'EUR', 'CAD', 'GBP']
+const AMOUNT_PRECISION = 6
+const REQUIRED_CONFIG_FIELDS = ['apiKey', 'privateKey']
+const USER_REF = 'userref'
 
-module.exports = {buy, sell}
-
-function buy (account, cryptoAtoms, fiatCode, cryptoCode) {
-  return trade(account, 'buy', cryptoAtoms, fiatCode, cryptoCode)
-}
-
-function sell (account, cryptoAtoms, fiatCode, cryptoCode) {
-  return trade(account, 'sell', cryptoAtoms, fiatCode, cryptoCode)
-}
-
-function trade (account, type, cryptoAtoms, fiatCode, cryptoCode) {
-  const kraken = new Kraken(account.apiKey, account.privateKey, {timeout: 30000})
-  const amount = coinUtils.toUnit(cryptoAtoms, cryptoCode)
-  const amountStr = amount.toFixed(6)
-
-  const pair = _.includes(fiatCode, ['USD', 'EUR', 'GBP', 'CAD'])
-    ? PAIRS[cryptoCode][fiatCode]
-    : PAIRS[cryptoCode]['EUR']
-
-  var orderInfo = {
-    pair,
-    type,
-    ordertype: 'market',
-    volume: amountStr,
-    expiretm: '+60'
+const loadConfig = (account) => {
+  const mapper = {
+    'privateKey': 'secret'
   }
+  const mapped = _.mapKeys(key => mapper[key] ? mapper[key] : key)(account)
 
-  return new Promise((resolve, reject) => {
-    kraken.api('AddOrder', orderInfo, (error, response) => {
-      if (error) return reject(error)
-
-      return resolve()
-    })
-  })
+  return {
+    ...mapped,
+    timeout: 3000,
+    nonce: function () { return this.microseconds() }
+  }
 }
+
+const loadOptions = () => ({ expiretm: '+60' })
+
+module.exports = { USER_REF, loadOptions, loadConfig, REQUIRED_CONFIG_FIELDS, CRYPTO, FIAT, ORDER_TYPE, AMOUNT_PRECISION }
