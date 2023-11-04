@@ -1,12 +1,10 @@
 #!/bin/bash
 set -e
 
-echo
-echo "Adding mock-wallet option..."
+sed -i "s/{ code: 'mock-wallet', display: 'Mock (Caution!)', class: WALLET, cryptos: ALL_CRYPTOS, dev: true },/{ code: 'mock-wallet', display: 'Mock (Caution!)', class: WALLET, cryptos: ALL_CRYPTOS },/g" $(npm -g root)/lamassu-server/lib/new-admin/config/accounts.js
 
-curl -#o $(npm root -g)/lamassu-server/lib/new-admin/config/accounts.js https://raw.githubusercontent.com/lamassu/lamassu-patches/master/switches/admin/mock/accounts.js &>/dev/null
-supervisorctl restart lamassu-admin-server &>/dev/null
+supervisorctl restart lamassu-server lamassu-admin-server &>/dev/null
 
 echo
-echo "Done! Now go to the 'Settings > Wallet' panel in your admin, edit a coin's wallet, and choose 'Mock'."
+echo "Mock wallet option enabled. Choose 'Mock wallet' in the admin's 'Settings > Wallets' panel. Use with caution!"
 echo
