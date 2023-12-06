@@ -7,9 +7,9 @@ echo
 echo "Updating your Zcash wallet. This may take a minute."
 echo
 
-echo "Downloading Zcash v5.6.1..."
-sourceHash=$'0144cc75f00460b136103eeb7c629d5af8101d52b9a77524f44305d44cfbc795'
-curl -#Lo /tmp/zcash.tar.gz https://z.cash/downloads/zcash-5.6.1-linux64-debian-bullseye.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Zcash v5.7.0..."
+sourceHash=$'91bccc38e8edb83cfa7ebbef685b6b252314d92ab7dfeeed0a73ef707cd34d4e'
+curl -#Lo /tmp/zcash.tar.gz https://download.z.cash/downloads/zcash-5.7.0-linux64-debian-bullseye.tar.gz >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/zcash.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
 if [ $hash != $sourceHash ] ; then
@@ -22,8 +22,8 @@ tar -xzf /tmp/zcash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating wallet..."
-cp /tmp/zcash-5.6.1/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/zcash-5.6.1 >> ${LOG_FILE} 2>&1
+cp /tmp/zcash-5.7.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/zcash-5.7.0 >> ${LOG_FILE} 2>&1
 rm /tmp/zcash.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
