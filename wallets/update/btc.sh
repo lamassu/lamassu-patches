@@ -8,7 +8,7 @@ echo "Updating Bitcoin Core. This may take a minute."
 echo
 
 echo "Downloading v26.0..."
-sourceHash=$'a978c407b497a727f0444156e397b50491ce862d1f906fef9b521415b3611c8b'
+sourceHash=$'23e5ab226d9e01ffaadef5ffabe8868d0db23db952b90b0593652993680bb8ab'
 curl -#o /tmp/bitcoin.tar.gz https://bitcoincore.org/bin/bitcoin-core-26.0/bitcoin-26.0-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/bitcoin.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
