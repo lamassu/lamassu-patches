@@ -37,17 +37,36 @@ rm $SERVER_LOG_ARCHIVE 2>/dev/null
 rm /tmp/*.support.log 2>/dev/null
 rm /tmp/*.support.html 2>/dev/null
 
-# get wallet daemon info
+# Get wallet daemon info
 echo "$(supervisorctl status)" >> /tmp/status.support.log
-echo "$(bitcoin-cli --version 2>/dev/null)" >> /tmp/status.support.log
-echo "Geth $(geth version | sed -n '2 p' 2>/dev/null)" >> /tmp/status.support.log
-echo "$(bitcoincash-cli --version 2>/dev/null)" >> /tmp/status.support.log
-echo "$(dash-cli --version 2>/dev/null)" >> /tmp/status.support.log
-echo "$(litecoin-cli --version 2>/dev/null)" >> /tmp/status.support.log
-echo "$(zcash-cli --version | sed -n '1 p' 2>/dev/null)" >> /tmp/status.support.log
+
+# Check for BTC
+if [ -f "/etc/supervisor/conf.d/bitcoin.conf" ]; then
+    echo "$(bitcoin-cli --version 2>/dev/null)" >> /tmp/status.support.log
+fi
+
+# Check for BCH
+if [ -f "/etc/supervisor/conf.d/bitcoincash.conf" ]; then
+    echo "$(bitcoincash-cli --version 2>/dev/null)" >> /tmp/status.support.log
+fi
+
+# Check for Dash
+if [ -f "/etc/supervisor/conf.d/dash.conf" ]; then
+    echo "$(dash-cli --version 2>/dev/null)" >> /tmp/status.support.log
+fi
+
+# Check for Litecoin
+if [ -f "/etc/supervisor/conf.d/litecoin.conf" ]; then
+    echo "$(litecoin-cli --version 2>/dev/null)" >> /tmp/status.support.log
+fi
+
+# Check for Zcash
+if [ -f "/etc/supervisor/conf.d/zcash.conf" ]; then
+    echo "$(zcash-cli --version | sed -n '1 p' 2>/dev/null)" >> /tmp/status.support.log
+fi
 
 # get lamassu-server version
-echo "$(cat $(npm root -g)/lamassu-server/package.json | grep "lamassu-server@")" >> /tmp/status.support.log
+echo "$(cat $(npm root -g)/lamassu-server/package.json | grep "version")" >> /tmp/status.support.log
 
 # get server disk space
 echo "$(df -h)" >> /tmp/status.support.log
