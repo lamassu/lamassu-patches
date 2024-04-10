@@ -2,11 +2,11 @@
 curl -#o /opt/lamassu-machine/tools/bcs.js https://raw.githubusercontent.com/lamassu/lamassu-machine/release-10.0/tools/bcs.js  &>/dev/null
 curl -#o /opt/lamassu-machine/tools/find-bcs-device.sh https://raw.githubusercontent.com/lamassu/lamassu-machine/release-10.0/tools/find-bcs-device.sh &>/dev/null
 chmod +x /opt/lamassu-machine/tools/find-bcs-device.sh &>/dev/null
-cd /opt/lamassu-machine/tools/ &>/dev/null
+cd /opt/lamassu-machine/ &>/dev/null
 echo
 echo 'Done! To use, hold a BTC QR code up to the barcode scanner, then run this command:'
 echo
-echo 'bash find-bcs-device.sh'
+echo 'bash tools/find-bcs-device.sh'
 echo
 echo 'Continue to hold up the QR code to the scanner until it beeps, at which point, this script will stop on the COM port on which the scanner is mounted.'
 echo
