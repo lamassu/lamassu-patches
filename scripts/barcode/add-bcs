@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-curl -#o /opt/lamassu-machine/tools/bcs.js https://raw.githubusercontent.com/lamassu/lamassu-patches/master/scripts/barcode/bcs.js  &>/dev/null
-curl -#o /opt/lamassu-machine/tools/find-bcs-device.sh https://raw.githubusercontent.com/lamassu/lamassu-patches/master/scripts/barcode/find-bcs-device.sh &>/dev/null
+curl -#o /opt/lamassu-machine/tools/bcs.js https://raw.githubusercontent.com/lamassu/lamassu-machine/release-10.0/tools/bcs.js  &>/dev/null
+curl -#o /opt/lamassu-machine/tools/find-bcs-device.sh https://raw.githubusercontent.com/lamassu/lamassu-machine/release-10.0/tools/find-bcs-device.sh &>/dev/null
 chmod +x /opt/lamassu-machine/tools/find-bcs-device.sh &>/dev/null
 cd /opt/lamassu-machine/tools/ &>/dev/null
 echo
