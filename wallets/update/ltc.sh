@@ -7,9 +7,9 @@ echo
 echo "Updating Litecoin Core. This may take a minute."
 echo
 
-echo "Downloading v0.21.2.2..."
-sourceHash=$'d53d429d4a0e36670df3d6c5c4eadfca6aac3d4b447a23106cfd490cfc77e9f2'
-curl -#o /tmp/litecoin.tar.gz https://download.litecoin.org/litecoin-0.21.2.2/linux/litecoin-0.21.2.2-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading v0.21.3..."
+sourceHash=$'ea231c630e2a243cb01affd4c2b95a2be71560f80b64b9f4bceaa13d736aa7cb'
+curl -#o /tmp/litecoin.tar.gz https://download.litecoin.org/litecoin-0.21.3/linux/litecoin-0.21.3-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/litecoin.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
 if [ $hash != $sourceHash ] ; then
@@ -22,8 +22,8 @@ tar -xzf /tmp/litecoin.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating wallet..."
-cp /tmp/litecoin-0.21.2.2/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/litecoin-0.21.2.2 >> ${LOG_FILE} 2>&1
+cp /tmp/litecoin-0.21.3/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/litecoin-0.21.3 >> ${LOG_FILE} 2>&1
 rm /tmp/litecoin.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
