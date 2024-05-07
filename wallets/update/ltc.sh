@@ -36,6 +36,24 @@ else
 fi
 echo
 
+if grep -q "blockfilterindex=" /mnt/blockchains/litecoin/litecoin.conf
+then
+    echo "blockfilterindex already defined, skipping..."
+else
+    echo "Disabling blockfilterindex in config file..."
+    echo -e "\nblockfilterindex=0" >> /mnt/blockchains/litecoin/litecoin.conf
+fi
+echo
+
+if grep -q "peerblockfilters=" /mnt/blockchains/litecoin/litecoin.conf
+then
+    echo "peerblockfilters already defined, skipping..."
+else
+    echo "Disabling peerblockfilters in config file..."
+    echo -e "\npeerblockfilters=0" >> /mnt/blockchains/litecoin/litecoin.conf
+fi
+echo
+
 echo "Starting wallet..."
 supervisorctl start litecoin >> ${LOG_FILE} 2>&1
 echo
