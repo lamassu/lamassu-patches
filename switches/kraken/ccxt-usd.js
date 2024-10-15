@@ -1,5 +1,6 @@
 const { COINS } = require('@lamassu/coins')
 const _ = require('lodash/fp')
+const { utils: coinUtils } = require('@lamassu/coins')
 
 const kraken = require('../exchange/kraken')
 const bitstamp = require('../exchange/bitstamp')
@@ -8,9 +9,10 @@ const binanceus = require('../exchange/binanceus')
 const cex = require('../exchange/cex')
 const bitpay = require('../ticker/bitpay')
 const binance = require('../exchange/binance')
+const bitfinex = require('../exchange/bitfinex')
 const logger = require('../../logger')
 
-const { BTC, BCH, DASH, ETH, LTC, ZEC, USDT, TRX, USDT_TRON } = COINS
+const { BTC, BCH, DASH, ETH, LTC, ZEC, USDT, TRX, USDT_TRON, LN } = COINS
 
 const ALL = {
   cex: cex,
@@ -20,10 +22,11 @@ const ALL = {
   itbit: itbit,
   bitpay: bitpay,
   coinbase: {
-    CRYPTO: [BTC, ETH, LTC, DASH, ZEC, BCH, USDT, USDT_TRON, TRX],
+    CRYPTO: [BTC, ETH, LTC, DASH, ZEC, BCH, USDT, USDT_TRON, TRX, LN],
     FIAT: 'ALL_CURRENCIES'
   },
-  binance: binance
+  binance: binance,
+  bitfinex: bitfinex
 }
 
 function buildMarket (fiatCode, cryptoCode, serviceName) {
