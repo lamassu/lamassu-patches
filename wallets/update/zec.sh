@@ -7,9 +7,9 @@ echo
 echo "Updating your Zcash wallet. This may take a minute."
 echo
 
-echo "Downloading Zcash v6.0.0..."
-sourceHash=$'3cb82f490e9c8e88007a0216b5261b33ef0fda962b9258441b2def59cb272a4d'
-curl -#Lo /tmp/zcash.tar.gz https://download.z.cash/downloads/zcash-6.0.0-linux64-debian-bullseye.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Zcash v6.2.0..."
+sourceHash=$'71cf378c27582a4b9f9d57cafc2b5a57a46e9e52a5eda33be112dc9790c64c6f'
+curl -#Lo /tmp/zcash.tar.gz https://download.z.cash/downloads/zcash-6.2.0-linux64-debian-bullseye.tar.gz >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/zcash.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
 if [ $hash != $sourceHash ] ; then
@@ -22,8 +22,8 @@ tar -xzf /tmp/zcash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating wallet..."
-cp /tmp/zcash-6.0.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/zcash-6.0.0 >> ${LOG_FILE} 2>&1
+cp /tmp/zcash-6.2.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/zcash-6.2.0 >> ${LOG_FILE} 2>&1
 rm /tmp/zcash.tar.gz >> ${LOG_FILE} 2>&1
 echo
 
@@ -42,6 +42,15 @@ then
 else
     echo "Setting 'allowdeprecated=getnewaddress' in config file..."
     echo -e "\nallowdeprecated=getnewaddress" >> /mnt/blockchains/zcash/zcash.conf
+fi
+echo
+
+if grep -q "i-am-aware-zcashd-will-be-replaced-by-zebrad-and-zallet-in-2025=1" /mnt/blockchains/zcash/zcash.conf
+then
+    echo "i-am-aware already defined, skipping..."
+else
+    echo "Setting 'i-am-aware' in config file..."
+    echo -e "\ni-am-aware-zcashd-will-be-replaced-by-zebrad-and-zallet-in-2025=1" >> /mnt/blockchains/zcash/zcash.conf
 fi
 echo
 
