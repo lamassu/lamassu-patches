@@ -11,9 +11,9 @@ echo "Updating Ethereum configuration file..."
 curl -#o /etc/supervisor/conf.d/ethereum.conf https://raw.githubusercontent.com/lamassu/lamassu-patches/master/wallets/conf/ethereum.conf >> ${LOG_FILE} 2>&1
 echo
 
-echo "Downloading Geth v1.14.12..."
-sourceHash=$'e56216b9d179a66a8f71d3dee13ad554da5544d3d29dba33f64c9c0eda5a2237'
-curl -#o /tmp/ethereum.tar.gz https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.14.12-293a300d.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Geth v1.15.11..."
+sourceHash=$'a14a4285daedf75ea04a7a298e6caa48d566a2786c93fc5e86ec2c5998c92455'
+curl -#o /tmp/ethereum.tar.gz https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.15.11-36b2371c.tar.gz >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/ethereum.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
 if [ $hash != $sourceHash ] ; then
@@ -26,8 +26,8 @@ tar -xzf /tmp/ethereum.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating..."
-cp /tmp/geth-linux-amd64-1.14.12-293a300d/geth /usr/local/bin/geth >> ${LOG_FILE} 2>&1
-rm -r /tmp/geth-linux-amd64-1.14.12-293a300d/ >> ${LOG_FILE} 2>&1
+cp /tmp/geth-linux-amd64-1.15.11-36b2371c/geth /usr/local/bin/geth >> ${LOG_FILE} 2>&1
+rm -r /tmp/geth-linux-amd64-1.15.11-36b2371c/ >> ${LOG_FILE} 2>&1
 rm /tmp/ethereum.tar.gz >> ${LOG_FILE} 2>&1
 echo
 

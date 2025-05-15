@@ -7,9 +7,9 @@ echo
 echo "Updating Bitcoin Core. This may take a minute."
 echo
 
-echo "Downloading v28.0..."
-sourceHash=$'7fe294b02b25b51acb8e8e0a0eb5af6bbafa7cd0c5b0e5fcbb61263104a82fbc'
-curl -#o /tmp/bitcoin.tar.gz https://bitcoincore.org/bin/bitcoin-core-28.0/bitcoin-28.0-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading v29.0..."
+sourceHash=$'a681e4f6ce524c338a105f214613605bac6c33d58c31dc5135bbc02bc458bb6c'
+curl -#o /tmp/bitcoin.tar.gz https://bitcoincore.org/bin/bitcoin-core-29.0/bitcoin-29.0-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/bitcoin.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
 if [ $hash != $sourceHash ] ; then
@@ -22,8 +22,8 @@ tar -xzf /tmp/bitcoin.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating wallet..."
-cp /tmp/bitcoin-28.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/bitcoin-28.0 >> ${LOG_FILE} 2>&1
+cp /tmp/bitcoin-29.0/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/bitcoin-29.0 >> ${LOG_FILE} 2>&1
 rm /tmp/bitcoin.tar.gz >> ${LOG_FILE} 2>&1
 echo
 

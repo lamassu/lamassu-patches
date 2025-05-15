@@ -7,9 +7,9 @@ echo
 echo "Updating Dash Core. This may take a minute."
 
 echo
-echo "Downloading Dash Core v21.1.1..."
-sourceHash=$'c3157d4a82a3cb7c904a68e827bd1e629854fefcc0dcaf1de4343a810a190bf5'
-curl -#Lo /tmp/dash.tar.gz https://github.com/dashpay/dash/releases/download/v21.1.1/dashcore-21.1.1-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
+echo "Downloading Dash Core v22.1.2..."
+sourceHash=$'230e871ef55c64c1550f358089a324a1e47e52a9a9c032366162cd82a19fa1af'
+curl -#Lo /tmp/dash.tar.gz https://github.com/dashpay/dash/releases/download/v22.1.2/dashcore-22.1.2-x86_64-linux-gnu.tar.gz >> ${LOG_FILE} 2>&1
 hash=$(sha256sum /tmp/dash.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
 if [ $hash != $sourceHash ] ; then
@@ -22,8 +22,8 @@ tar -xzf /tmp/dash.tar.gz -C /tmp/ >> ${LOG_FILE} 2>&1
 echo
 
 echo "Updating..."
-cp /tmp/dashcore-21.1.1/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
-rm -r /tmp/dashcore-21.1.1 >> ${LOG_FILE} 2>&1
+cp /tmp/dashcore-22.1.2/bin/* /usr/local/bin/ >> ${LOG_FILE} 2>&1
+rm -r /tmp/dashcore-22.1.2 >> ${LOG_FILE} 2>&1
 rm /tmp/dash.tar.gz >> ${LOG_FILE} 2>&1
 
 echo
